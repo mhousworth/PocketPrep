@@ -1,6 +1,7 @@
 # PocketPrep
 
 > This app will allow the mobile user to construct a meal plan for the upcoming timeframe (established by user) with provided meal recipes. The app will then compile a weekly shopping list depending on meals chosen or searched. 
+
 This mobile application implements the [React-Native](https://github.com/facebook/react-native) framework.
 
 ```
