@@ -1,0 +1,25 @@
+/* Include font css */
+@import url("./fonts/fonts.css");
+
+:root{
+    --darkblue:#051C34;
+    --lightblue:#55D4FF;
+    --lightgray:rgb(178, 179, 179);
+    --eggshell:#F2F4F4;
+}
+/* Font styles class names*/
+.fa-solid{
+    font-family: "font-solid"
+}
+.fa-regular{
+    font-family: "font-regular"
+}
+.fa-brands{
+    font-family: "font-brands"
+}
+.lightblue-tag{
+    color:var(--lightblue);
+}
+.darkblue-tag{
+    color:var(--darkblue);
+}
