@@ -7,12 +7,13 @@ const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
     Details: DetailsScreen,
+    Calendar: CalendarScreen
   },
   {
     initialRouteName: 'Home',
   }
 );
-
+console.log("begin");
 const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {
