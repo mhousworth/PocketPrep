@@ -7,7 +7,7 @@ class HomeScreen extends React.Component {
           <Text className="lightblue-tag">Home Screen</Text>
           <Button
             title="Go to Calendar view"
-            onPress={() => this.props.navigation.navigate('Details')}
+            onPress={() => this.props.navigation.navigate('Calendar')}
           />
           <Button
             title="Go to Shopping List"
