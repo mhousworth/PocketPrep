@@ -22,6 +22,10 @@ class HomeScreen extends React.Component {
             title="Add new Meal"
             onPress={() => this.props.navigation.navigate('AddRecipe')}
           />
+          <Button
+            title="Go to Custom Meals"
+            onPress={() => this.props.navigation.navigate('CustomMeal')}
+          />
         </View>
       );
     }

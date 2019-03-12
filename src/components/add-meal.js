@@ -2,6 +2,7 @@ import React from 'react';
 import { View,  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Text,Input,Button, Divider } from 'react-native-elements';
+
 // import console = require('console');
 
 class AddScreen extends React.Component {
@@ -10,7 +11,7 @@ class AddScreen extends React.Component {
         this.state = {
             counter:1,
             ingredients:[],
-            title:"",
+            name:"",
             ingName:"",
             ingType:"",
             ingAmount:""
@@ -22,7 +23,7 @@ class AddScreen extends React.Component {
         <View>
             <Text h3>New Recipe</Text>
             <Button title="Add New" onPress={this.handleAddIngredient.bind(this)}></Button>
-            <Button title={"Submit "+this.state.title} onPress={this.handleSubmitsIngredient.bind(this)}></Button>
+            <Button title={"Submit "} onPress={this.handleSubmitsIngredient.bind(this)}></Button>
             <Divider/>
             <ScrollView>
                 <Input placeholder="Type Here"
@@ -70,6 +71,7 @@ class AddScreen extends React.Component {
     }
   handleSubmitsIngredient(){
       //Output JSON format and append to recipe List with id="Created Recipe"  
+      
     return;
   }
   }

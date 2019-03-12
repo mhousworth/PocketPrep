@@ -5,6 +5,7 @@ import HomeScreen from "./src/components/home"
 import CalendarScreen from './src/components/calendar';
 import PresetScreen from './src/components/preset';
 import AddScreen from './src/components/add-meal';
+import CustomScreen from './src/components/custom-meal';
 
 const RootStack = createStackNavigator(
   {
@@ -12,7 +13,8 @@ const RootStack = createStackNavigator(
     List: ShoppingListScreen,
     Calendar: CalendarScreen,
     Preset: PresetScreen,
-    AddRecipe: AddScreen
+    AddRecipe: AddScreen,
+    CustomMeal: CustomScreen
   },
   {
     initialRouteName: 'Home',
