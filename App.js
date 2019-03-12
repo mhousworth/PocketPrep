@@ -1,14 +1,18 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
-import DetailsScreen from "./src/components/details"
+import ShoppingListScreen from "./src/components/shopping"
 import HomeScreen from "./src/components/home"
-import Calendar from "./src/components/calendar"
+import CalendarScreen from './src/components/calendar';
+import PresetScreen from './src/components/preset';
+import AddScreen from './src/components/add-meal';
 
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Details: DetailsScreen,
-    Calendar: Calendar
+    List: ShoppingListScreen,
+    Calendar: CalendarScreen,
+    Preset: PresetScreen,
+    AddRecipe: AddScreen
   },
   {
     initialRouteName: 'Home',

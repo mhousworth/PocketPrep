@@ -8,7 +8,7 @@ const _format = 'YYYY-MM-DD'
 const _today = moment().format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
-class Calendar extends React.Component {
+class CalendarScreen extends React.Component {
   // It is not possible to select some to current day.
   initialState = {
       [_today]: {disabled: true}
@@ -73,7 +73,7 @@ class Calendar extends React.Component {
   }
 }
 
-export default Calendar
+export default CalendarScreen;
 
 // TODO: Set up an event handle for navigating to date specified page
 // TODO: Set up item container for user entered meals -- requires backend pulling from a list

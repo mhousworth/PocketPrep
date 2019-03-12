@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import recipeData from '../data/recipe'
 
-class DetailsScreen extends React.Component {
+class ShoppingListScreen extends React.Component {
     render() {
-      console.log(recipeData[0]);
       return (
         
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -17,4 +15,4 @@ class DetailsScreen extends React.Component {
       );
     }
   }
-  export default DetailsScreen;
+  export default ShoppingListScreen;

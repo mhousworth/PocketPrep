@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
+
 class HomeScreen extends React.Component {
     render() {
       return (
@@ -11,11 +12,15 @@ class HomeScreen extends React.Component {
           />
           <Button
             title="Go to Shopping List"
-            onPress={() => this.props.navigation.navigate('Details')}
+            onPress={() => this.props.navigation.navigate('List')}
           />
           <Button
             title="Go to Preset Meals"
-            onPress={() => this.props.navigation.navigate('Details')}
+            onPress={() => this.props.navigation.navigate('Preset')}
+          />
+          <Button
+            title="Add new Meal"
+            onPress={() => this.props.navigation.navigate('AddRecipe')}
           />
         </View>
       );
