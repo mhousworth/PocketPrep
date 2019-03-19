@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
-import ShoppingListScreen from "./src/components/shopping"
+import ShoppingListScreen from "./src/components/shoppingListComponents/shopping"
 import HomeScreen from "./src/components/home"
-import CalendarScreen from './src/components/calendar';
-import PresetScreen from './src/components/preset';
-import AddScreen from './src/components/add-meal';
-import CustomScreen from './src/components/custom-meal';
+import CalendarScreen from './src/components/calendarComponents/calendar';
+import PresetScreen from './src/components/viewMeals/preset';
+import AddScreen from './src/components/editMeals/add-meal';
+import CustomScreen from './src/components/viewMeals/custom-meal';
+import IngredientScreen from './src/components/viewMeals/ingredients';
 
 const RootStack = createStackNavigator(
   {
@@ -14,13 +15,14 @@ const RootStack = createStackNavigator(
     Calendar: CalendarScreen,
     Preset: PresetScreen,
     AddRecipe: AddScreen,
-    CustomMeal: CustomScreen
+    CustomMeal: CustomScreen,
+    Ingredients: IngredientScreen
   },
   {
     initialRouteName: 'Home',
   }
 );
-console.log("begin");
+
 const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {

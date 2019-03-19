@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, ScrollView  } from 'react-native';
 import { Header,ListItem } from 'react-native-elements'
-import recipeData from '../data/recipe'
+import customData from '../../data/custom'
 
-class PresetScreen extends React.Component {
+class CustomScreen extends React.Component {
     render() {
-        recipeData.map((meal)=>{
+        customData.map((meal)=>{
             console.log(meal.name);
         })
       return (
@@ -19,7 +19,7 @@ class PresetScreen extends React.Component {
         
             <ScrollView >
                 {
-                    recipeData.map((l, i) => (
+                    customData.map((l, i) => (
                     <ListItem
                         key={i}
                         title={l.name}
@@ -40,4 +40,4 @@ class PresetScreen extends React.Component {
 
 
   }
-  export default PresetScreen;
+  export default CustomScreen;

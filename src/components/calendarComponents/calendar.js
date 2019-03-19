@@ -5,7 +5,7 @@ import { CalendarList } from 'react-native-calendars';
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format)
+const _today = moment().format(_format-1)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {
@@ -14,8 +14,8 @@ class CalendarScreen extends React.Component {
       [_today]: {disabled: true}
   }
   
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       _markedDates: this.initialState
@@ -41,10 +41,13 @@ class CalendarScreen extends React.Component {
       
       // Create a new object using object property spread since it should be immutable
       // Reading: https://davidwalsh.name/merge-objects
-      const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } }
+      const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
       
+      console.log(markedDates);
       // Triggers component to render again, picking up the new state
       this.setState({ _markedDates: updatedMarkedDates });
+
+
   }
   
   render() {
