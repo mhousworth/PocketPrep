@@ -43,7 +43,7 @@ class CalendarScreen extends React.Component {
       // Reading: https://davidwalsh.name/merge-objects
       const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
       
-      console.log(markedDates);
+      console.log(day.dateString);
       // Triggers component to render again, picking up the new state
       this.setState({ _markedDates: updatedMarkedDates });
 

@@ -3,10 +3,10 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'; // 
 import ShoppingListScreen from "./src/components/shoppingListComponents/shopping"
 import HomeScreen from "./src/components/home"
 import CalendarScreen from './src/components/calendarComponents/calendar';
-import PresetScreen from './src/components/viewMeals/preset';
-import AddScreen from './src/components/editMeals/add-meal';
-import CustomScreen from './src/components/viewMeals/custom-meal';
-import IngredientScreen from './src/components/viewMeals/ingredients';
+import PresetScreen from './src/components/viewMealsComponents/preset';
+import AddScreen from './src/components/editMealsComponents/add-meal';
+import CustomScreen from './src/components/viewMealsComponents/custom-meal';
+import IngredientScreen from './src/components/viewMealsComponents/ingredients';
 
 const RootStack = createStackNavigator(
   {
