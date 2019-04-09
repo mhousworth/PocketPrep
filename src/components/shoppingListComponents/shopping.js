@@ -43,17 +43,17 @@ class ShoppingListScreen extends React.Component {
     //                       Output: Array of ingredients of each meal
     createShoppingList(mealNames) {
       let shoppingList = [];
-      for (let n = 0; n < mealNames.length; n++ ) {
-        for (let i = 0; i < recipeDb.length; i++) {
-          if (recipeDb[i].name == mealNames[n]) {
-            let tempname = "Ingredients for " + mealNames[n];
+      for (let mealNameIndex = 0; mealNameIndex < mealNames.length; mealNameIndex++ ) {
+        for (let recipeIndex = 0; recipeIndex < recipeDb.length; recipeIndex++) {
+          if (recipeDb[recipeIndex].name == mealNames[mealNameIndex]) {
+            let tempname = "Ingredients for " + mealNames[mealNameIndex];
             shoppingList.push(tempname);
-            for (j = 0; j < recipeDb[i].ingredients.length; j++) {
+            for (ingredientIndex = 0; ingredientIndex < recipeDb[recipeIndex].ingredients.length; ingredientIndex++) {
               let temp = "";
-                if (recipeDb[i].ingredients[j].measurement == "") {
-                  temp += recipeDb[i].ingredients[j].name;
+                if (recipeDb[recipeIndex].ingredients[ingredientIndex].measurement == "") {
+                  temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name;
                 } else {
-                  temp += recipeDb[i].ingredients[j].name + recipeDb[i].ingredients[j].amount + " " + recipeDb[i].ingredients[j].measurement;
+                  temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name + recipeDb[recipeIndex].ingredients[ingredientIndex].amount + " " + recipeDb[recipeIndex].ingredients[ingredientIndex].measurement;
                 }
                 shoppingList.push(temp);
           }
@@ -62,7 +62,7 @@ class ShoppingListScreen extends React.Component {
         }
       }
     }
-    return ing_array;
+    return shoppingList;
    }
   }
   export default ShoppingListScreen;

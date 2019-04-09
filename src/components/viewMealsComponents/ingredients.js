@@ -8,6 +8,8 @@ import recipeDb from "../../data/recipe"
 class IngredientScreen extends React.Component {
   constructor(props){
     super(props);
+
+    // title is retrieved from Meal List Screen
     this.state={
       ingredients:[],
       title:this.props.navigation.state.params.mealName
@@ -15,8 +17,7 @@ class IngredientScreen extends React.Component {
     }
   }
   render() {
-      console.log(this.props);
-    this.state.ingredients=(this.createShoppingList([this.state.title]));
+    this.state.ingredients=(this.createIngredientsList([this.state.title]));
       return (
         <View>
           {}
@@ -41,28 +42,27 @@ class IngredientScreen extends React.Component {
       );
     }
 
-    createShoppingList(mealname) {
-      var ing_array = [];
-      for (n = 0; n < mealname.length; n++ ) {
-        for (i = 0; i < recipeDb.length; i++) {
-          if (recipeDb[i].name == mealname[n]) {
-            var tempname = "Ingredients for " + mealname[n];
-            ing_array.push(tempname);
-            for (j = 0; j < recipeDb[i].ingredients.length; j++) {
-              var temp = "";
-                if (recipeDb[i].ingredients[j].measurement == "") {
-                  temp += recipeDb[i].ingredients[j].name;
+    createIngredientsList(mealName) {
+      let ingredientsList = [];
+        for (let recipeIndex = 0; recipeIndex < recipeDb.length; recipeIndex++) {
+          if (recipeDb[recipeIndex].name == mealName) {
+            let tempname = "Ingredients for " + mealName;
+            ingredientsList.push(tempname);
+            for (ingredientIndex = 0; ingredientIndex < recipeDb[recipeIndex].ingredients.length; ingredientIndex++) {
+              let temp = "";
+                if (recipeDb[recipeIndex].ingredients[ingredientIndex].measurement == "") {
+                  temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name;
                 } else {
-                  temp += recipeDb[i].ingredients[j].name + recipeDb[i].ingredients[j].amount + " " + recipeDb[i].ingredients[j].measurement;
+                  temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name + recipeDb[recipeIndex].ingredients[ingredientIndex].amount + " " + recipeDb[recipeIndex].ingredients[ingredientIndex].measurement;
                 }
-                ing_array.push(temp);
+                ingredientsList.push(temp);
           }
-          ing_array.push("");
+          ingredientsList.push("");
           break;
         }
-      }
+      
     }
-    return ing_array;
+    return ingredientsList;
    }
   }
   export default IngredientScreen;

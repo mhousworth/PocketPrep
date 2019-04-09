@@ -1,13 +1,10 @@
 import React from 'react';
-import { View, Text, ScrollView  } from 'react-native';
+import { View, ScrollView  } from 'react-native';
 import { Header,ListItem } from 'react-native-elements'
 import recipeData from '../../data/recipe'
 
 class PresetScreen extends React.Component {
     render() {
-        recipeData.map((meal)=>{
-            console.log(meal.name);
-        })
       return (
         <View>
             <Header
@@ -34,6 +31,7 @@ class PresetScreen extends React.Component {
 
     handleMealSend(name){
         const { navigate } = this.props.navigation;
+        // Send name of the meal to the Ingredients Screen Component (ingredients.js)
         navigate('Ingredients', { mealName: name })
 
         return;
