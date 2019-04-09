@@ -7,15 +7,17 @@ import recipeDb from "../../data/recipe"
 class ShoppingListScreen extends React.Component {
   constructor(props){
     super(props);
+
+    // Ingredients holds all ingredients of selected meals
     this.state={
-      ingredients:shoppingList
+      ingredients:[]
     }
   }
   render() {
+    
     this.state.ingredients=(this.createShoppingList(["School's Out Scalloped Potatoes", "Lentil Vegetable Soup", "Healthy Breakfast Muffins"]));
       return (
         <View>
-          {}
             <Header
             placement="left"
             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -36,24 +38,26 @@ class ShoppingListScreen extends React.Component {
         </View>
       );
     }
-
-    createShoppingList(mealname) {
-      var ing_array = [];
-      for (n = 0; n < mealname.length; n++ ) {
-        for (i = 0; i < recipeDb.length; i++) {
-          if (recipeDb[i].name == mealname[n]) {
-            var tempname = "Ingredients for " + mealname[n];
-            ing_array.push(tempname);
+    // Pulls ingredients with name of the meal
+    // createShoppingList -- Input: Array of meal names
+    //                       Output: Array of ingredients of each meal
+    createShoppingList(mealNames) {
+      let shoppingList = [];
+      for (let n = 0; n < mealNames.length; n++ ) {
+        for (let i = 0; i < recipeDb.length; i++) {
+          if (recipeDb[i].name == mealNames[n]) {
+            let tempname = "Ingredients for " + mealNames[n];
+            shoppingList.push(tempname);
             for (j = 0; j < recipeDb[i].ingredients.length; j++) {
-              var temp = "";
+              let temp = "";
                 if (recipeDb[i].ingredients[j].measurement == "") {
                   temp += recipeDb[i].ingredients[j].name;
                 } else {
                   temp += recipeDb[i].ingredients[j].name + recipeDb[i].ingredients[j].amount + " " + recipeDb[i].ingredients[j].measurement;
                 }
-                ing_array.push(temp);
+                shoppingList.push(temp);
           }
-          ing_array.push("");
+          shoppingList.push("");
           break;
         }
       }

@@ -4,9 +4,10 @@ import ShoppingListScreen from "./src/components/shoppingListComponents/shopping
 import HomeScreen from "./src/components/home"
 import CalendarScreen from './src/components/calendarComponents/calendar';
 import PresetScreen from './src/components/viewMealsComponents/preset';
-import AddScreen from './src/components/editMealsComponents/add-meal';
+import AddScreen from './src/components/editMealsComponents/add-new-meal';
 import CustomScreen from './src/components/viewMealsComponents/custom-meal';
 import IngredientScreen from './src/components/viewMealsComponents/ingredients';
+import DebugScreen from './src/components/debug';
 
 const RootStack = createStackNavigator(
   {
@@ -16,7 +17,8 @@ const RootStack = createStackNavigator(
     Preset: PresetScreen,
     AddRecipe: AddScreen,
     CustomMeal: CustomScreen,
-    Ingredients: IngredientScreen
+    Ingredients: IngredientScreen,
+    Debugger:DebugScreen
   },
   {
     initialRouteName: 'Home',

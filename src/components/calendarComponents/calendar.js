@@ -57,7 +57,7 @@ class CalendarScreen extends React.Component {
             theme={{dotColor: 'red', monthTextColor: 'orange'
         }}
             
-            pastScrollRange={1}
+            pastScrollRange={0}
             futureScrollRange={1}
 
             // we use moment.js to give the minimum and maximum dates.
