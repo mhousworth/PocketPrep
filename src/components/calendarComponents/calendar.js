@@ -50,6 +50,7 @@ class CalendarScreen extends React.Component {
       
       // markedDates = {...markedDates, ...{ marked }};
       
+<<<<<<< HEAD:src/components/calendarComponents/calendar.js
       // // Create a new object using object property spread since it should be immutable
       // // Reading: https://davidwalsh.name/merge-objects
       // const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
@@ -57,6 +58,15 @@ class CalendarScreen extends React.Component {
       // console.log(day.dateString);
       // // Triggers component to render again, picking up the new state
       // this.setState({ _markedDates: updatedMarkedDates });
+=======
+      // Create a new object using object property spread since it should be immutable
+      // Reading: https://davidwalsh.name/merge-objects
+      const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
+      
+      console.log(day.dateString);
+      // Triggers component to render again, picking up the new state
+      this.setState({ _markedDates: updatedMarkedDates });
+>>>>>>> da3248074e9bcd4a42c07bc083126670354cb4f7:src/components/calendarComponents/calendar.js
 
 
   }

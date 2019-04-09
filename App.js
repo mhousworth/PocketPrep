@@ -11,6 +11,7 @@ import DebugScreen from './src/components/debug';
 import viewDayScreen from './src/components/calendarComponents/day-view'
 import viewDayAddMeal from './src/components/calendarComponents/day-add-meal'
 
+
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
@@ -23,6 +24,7 @@ const RootStack = createStackNavigator(
     Debugger:DebugScreen,
     DayView: viewDayScreen,
 	DayAddMeal: viewDayAddMeal
+
   },
   {
     initialRouteName: 'Home',
