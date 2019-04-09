@@ -8,7 +8,16 @@ import { FileSystem } from 'expo';
 class AddScreen extends React.Component {
     constructor(props){
         super(props);
-        
+        this.state = {
+          counter:1,
+          ingredients:[],
+          name:"",
+          ingName:"",
+          ingType:"",
+          ingAmount:"",
+          customMeals:[]
+
+      }
 
         let currentCustomMeals=[];
         this.fileUri = FileSystem.documentDirectory + 'custom.json';
@@ -29,7 +38,7 @@ class AddScreen extends React.Component {
               console.log(e);
               }
               //Parse result to object and store in Custom Meals List
-              currentCustomMeals = JSON.parse(result);
+              this.setState({customMeals:JSON.parse(result)});
             }
             //Run async function
             fileread();
@@ -44,16 +53,7 @@ class AddScreen extends React.Component {
 
         });
 
-        this.state = {
-          counter:1,
-          ingredients:[],
-          name:"",
-          ingName:"",
-          ingType:"",
-          ingAmount:"",
-          customMeals:currentCustomMeals
-
-      }
+        
     }
     render() {
       return (
@@ -114,6 +114,8 @@ class AddScreen extends React.Component {
     }
   handleSubmitsIngredient(){
       
+		console.log('custom meals object: ' + JSON.stringify(this.state.customMeals));
+	  
           // Creates a custom meal object
           var newMeal = {
                   name: this.state.name,
