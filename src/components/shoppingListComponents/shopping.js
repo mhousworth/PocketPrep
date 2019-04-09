@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, ScrollView  } from 'react-native';
-import { Header,ListItem } from 'react-native-elements'
+import { View, Text, ScrollView,StyleSheet  } from 'react-native';
+import { Header,ListItem,CheckBox } from 'react-native-elements'
 import shoppingList from "../../data/shopping-list"
 import recipeDb from "../../data/recipe"
 
@@ -12,6 +12,14 @@ class ShoppingListScreen extends React.Component {
     this.state={
       ingredients:[]
     }
+    this.styles = StyleSheet.create({
+      isChecked:{
+        backgroundColor:'#90ee90'
+      },
+      notChecked:{
+        backgroundColor:'#FFFFFF'
+      }
+    })
   }
   render() {
     
@@ -27,10 +35,14 @@ class ShoppingListScreen extends React.Component {
         
             <ScrollView >
                 {
-                    this.state.ingredients.map((item,i) => (
+                    this.state.ingredients.map((item) => (
                     <ListItem
-                        key={i}
-                        title={item}
+                        key={item["index"]}
+                        title={item["ingredient"]}
+                        checkBox={{checked:item["isChecked"]}}
+                        onPress={() => {
+                          item["isChecked"]=!item["isChecked"];
+                        }}
                     />
                     ))
                 }
@@ -47,7 +59,7 @@ class ShoppingListScreen extends React.Component {
         for (let recipeIndex = 0; recipeIndex < recipeDb.length; recipeIndex++) {
           if (recipeDb[recipeIndex].name == mealNames[mealNameIndex]) {
             let tempname = "Ingredients for " + mealNames[mealNameIndex];
-            shoppingList.push(tempname);
+            shoppingList.push({ingredient:tempname,isChecked:false,index:shoppingList.length});
             for (ingredientIndex = 0; ingredientIndex < recipeDb[recipeIndex].ingredients.length; ingredientIndex++) {
               let temp = "";
                 if (recipeDb[recipeIndex].ingredients[ingredientIndex].measurement == "") {
@@ -55,7 +67,7 @@ class ShoppingListScreen extends React.Component {
                 } else {
                   temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name + recipeDb[recipeIndex].ingredients[ingredientIndex].amount + " " + recipeDb[recipeIndex].ingredients[ingredientIndex].measurement;
                 }
-                shoppingList.push(temp);
+                shoppingList.push({ingredient:temp,isChecked:false,index:shoppingList.length});
           }
           shoppingList.push("");
           break;
@@ -64,5 +76,14 @@ class ShoppingListScreen extends React.Component {
     }
     return shoppingList;
    }
+
+   // Highlights List Item on user click
+   // lightgreen (#90ee90)
+   checkIngredients(id){
+     shoppingList[id]["isChecked"] = !shoppingList[id]["isChecked"];
+    
+
+   }
+   
   }
   export default ShoppingListScreen;

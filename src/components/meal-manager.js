@@ -111,7 +111,7 @@ export default class MealManager {
 
 
 	//add/append mealplan within MealPlanCalendar
-	//Parameters: d = date (XX-XX-XXXX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
+	//Parameters: d = date (XXXX-XX-XX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
 	addmeal(d, t, m) {
 	
 	//Create mealplan object

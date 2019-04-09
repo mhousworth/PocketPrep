@@ -11,11 +11,11 @@ class DebugScreen extends React.Component {
           <Text className="lightblue-tag">Home Screen</Text>
           <Button
             title={"Add meal Mac&Cheese"}
-            onPress={() => mm.addmeal("03-12-2019","L","Mac&Cheese") }
+            onPress={() => mm.addmeal("2019-03-12","L","Mac&Cheese") }
           />
 		  <Button
             title="Add meal Beef Dip"
-            onPress={() => mm.addmeal("03-14-2019","D","Beef Dip") }
+            onPress={() => mm.addmeal("2019-03-14","D","Beef Dip") }
           />
 		  <Button
             title="Print File to Console"
