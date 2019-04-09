@@ -1,12 +1,24 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
-import DetailsScreen from "./src/components/details"
+import ShoppingListScreen from "./src/components/shoppingListComponents/shopping"
 import HomeScreen from "./src/components/home"
+import CalendarScreen from './src/components/calendarComponents/calendar';
+import PresetScreen from './src/components/viewMealsComponents/preset';
+import AddScreen from './src/components/editMealsComponents/add-new-meal';
+import CustomScreen from './src/components/viewMealsComponents/custom-meal';
+import IngredientScreen from './src/components/viewMealsComponents/ingredients';
+import DebugScreen from './src/components/debug';
 
 const RootStack = createStackNavigator(
   {
     Home: HomeScreen,
-    Details: DetailsScreen,
+    List: ShoppingListScreen,
+    Calendar: CalendarScreen,
+    Preset: PresetScreen,
+    AddRecipe: AddScreen,
+    CustomMeal: CustomScreen,
+    Ingredients: IngredientScreen,
+    Debugger:DebugScreen
   },
   {
     initialRouteName: 'Home',
