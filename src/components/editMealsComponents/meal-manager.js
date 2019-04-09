@@ -1,6 +1,7 @@
 import { FileSystem } from 'expo';
+import { Asset } from 'expo';
 
-class MealPlan {
+class mealplan {
 		constructor(){
 			//Arrays for each "meal time", holds strings of meal names
 			this.Breakfast = [];
@@ -8,6 +9,8 @@ class MealPlan {
 			this.Dinner = [];
 		}
 
+		
+		//TODO: Handle amounts of the same meal name, OR do not add duplicates
 		//Add name of meal to appropriate "meal time"
 		add(t,m) {
 			if (t == 'B')
@@ -48,8 +51,8 @@ class MealPlan {
 				arr.pop();
 			else {
 				//Slice a left and right array, leaving out the matched entry
-				let left = arr.slice(0, i);
-				let right = arr.slice(i+1, arr.length);
+				left = arr.slice(0, i);
+				right = arr.slice(i+1, arr.length);
 				//Concat into new array
 				arr = left.concat(right);
 			}
@@ -71,36 +74,47 @@ export default class MealManager {
 	
 	constructor(){
 	
-        //Get/create filepath
-        
-		this.fileUri = FileSystem.documentDirectory + 'mealplan.json';
-		if ( FileSystem.getInfoAsync(this.fileUri).exists == true) {
+		//Get/create filepath
+		this.fileUri = FileSystem.documentDirectory + 'meals.json';
+	}
+	
+	//MUST CALL AFTER CREATING MEALMANAGER OBJECT
+	//The point is to call this function using await, since the constructor is not async you cannot await it.
+	//Therefore you create the object and then call its init() function
+	async init() {
+		
+		let fileInfo = await FileSystem.getInfoAsync(this.fileUri);
+		
+		if ( fileInfo["exists"] == true ) {
 			console.log('mealplan file exists');
 			
-			//FileSystem reads are asynchronous, must await before creating MealPlanCalendar object
-			fileread = async () => {
-				let result = null;
+			let result = null;
 			
-				try {
-					//Wait for FileSystem read to return a result string
-					result = await FileSystem.readAsStringAsync(this.fileUri);
-				
-				} catch(e) {
+			try {
+				//Wait for FileSystem read to return a result string
+				result = await FileSystem.readAsStringAsync(this.fileUri);
+			
+			} catch(e) {
 				console.log(e);
-				}
-				//Parse result to object and store in MealPlanCalendar
-				this.MealPlanCalendar = JSON.parse(result);
 			}
-			//Run async function
-			fileread();
+			//Parse result to object and store in MealPlanCalendar
+			this.MealPlanCalendar = JSON.parse(result);
+			console.log(result);
 		}
 		else {
 			console.log('mealplan file does not exist');
 			//create the file based on app's asset
-			this.MealPlanCalendar = "{}";
-            FileSystem.writeAsStringAsync(this.fileUri, this.MealPlanCalendar);
-            this.MealPlanCalendar = {};
+			this.MealPlanCalendar = require('../../data/meal-plan'); 
+			FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify(this.MealPlanCalendar));
+			FileSystem.readAsStringAsync(this.fileUri).then( (filedata) => {console.log(filedata)});
 		}
+
+	}
+	
+	//Probably don't need this anymore
+	static async asyncConstructor() {
+		let MM = new MealManager();
+		return MM;
 	}
 	
 	//get mealplan object from MealPlanCalendar
@@ -108,14 +122,16 @@ export default class MealManager {
 	getMealPlan(d){	
 		return this.MealPlanCalendar[d];
 	}
+	
+	//getMealPlanString(d,t){}
 
 
 	//add/append mealplan within MealPlanCalendar
-	//Parameters: d = date (XXXX-XX-XX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
+	//Parameters: d = date (XX-XX-XXXX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
 	addmeal(d, t, m) {
 	
 	//Create mealplan object
-	let mp = new MealPlan();
+	let mp = new mealplan();
 	
 		//if there is not an existing mealplan
 		if( this.MealPlanCalendar[d] == null ) {

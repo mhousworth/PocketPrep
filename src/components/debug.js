@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import MealManager from './meal-manager';
+import MealManager from './editMealsComponents/meal-manager';
 
 let mm = new MealManager();
 
