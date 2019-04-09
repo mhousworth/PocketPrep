@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, ScrollView,StyleSheet  } from 'react-native';
+import { View, Text, ScrollView  } from 'react-native';
 import { Header,ListItem,CheckBox } from 'react-native-elements'
-import shoppingList from "../../data/shopping-list"
 import recipeDb from "../../data/recipe"
 
 class ShoppingListScreen extends React.Component {
@@ -10,20 +9,13 @@ class ShoppingListScreen extends React.Component {
 
     // Ingredients holds all ingredients of selected meals
     this.state={
-      ingredients:[]
+      ingredients:(this.createShoppingList(["School's Out Scalloped Potatoes", "Lentil Vegetable Soup", "Healthy Breakfast Muffins"]))
     }
-    this.styles = StyleSheet.create({
-      isChecked:{
-        backgroundColor:'#90ee90'
-      },
-      notChecked:{
-        backgroundColor:'#FFFFFF'
-      }
-    })
+
   }
   render() {
     
-    this.state.ingredients=(this.createShoppingList(["School's Out Scalloped Potatoes", "Lentil Vegetable Soup", "Healthy Breakfast Muffins"]));
+    
       return (
         <View>
             <Header
@@ -36,13 +28,10 @@ class ShoppingListScreen extends React.Component {
             <ScrollView >
                 {
                     this.state.ingredients.map((item) => (
-                    <ListItem
-                        key={item["index"]}
-                        title={item["ingredient"]}
-                        checkBox={{checked:item["isChecked"]}}
-                        onPress={() => {
-                          item["isChecked"]=!item["isChecked"];
-                        }}
+                      <CheckBox
+                      title={item["ingredient"]}
+                      checked={item["isChecked"]}
+                      onPress={this.checkIngredients.bind(this,item["index"],item["ingredient"])}
                     />
                     ))
                 }
@@ -59,7 +48,7 @@ class ShoppingListScreen extends React.Component {
         for (let recipeIndex = 0; recipeIndex < recipeDb.length; recipeIndex++) {
           if (recipeDb[recipeIndex].name == mealNames[mealNameIndex]) {
             let tempname = "Ingredients for " + mealNames[mealNameIndex];
-            shoppingList.push({ingredient:tempname,isChecked:false,index:shoppingList.length});
+            shoppingList.push({ingredient:tempname});
             for (ingredientIndex = 0; ingredientIndex < recipeDb[recipeIndex].ingredients.length; ingredientIndex++) {
               let temp = "";
                 if (recipeDb[recipeIndex].ingredients[ingredientIndex].measurement == "") {
@@ -77,10 +66,16 @@ class ShoppingListScreen extends React.Component {
     return shoppingList;
    }
 
-   // Highlights List Item on user click
-   // lightgreen (#90ee90)
-   checkIngredients(id){
-     shoppingList[id]["isChecked"] = !shoppingList[id]["isChecked"];
+   // Checks Off List Item on user click
+   checkIngredients(id,name){
+	// Very Slow, need to optimize, but it works!
+    if(id !== undefined && name.search("Ingredients for ") == -1)
+    {  
+      this.state.ingredients[id]["isChecked"]=!this.state.ingredients[id]["isChecked"];
+      this.state.ingredients[id]["ingredient"]=name;
+      this.setState({ingredients:this.state.ingredients});
+    }
+     return;
     
 
    }
