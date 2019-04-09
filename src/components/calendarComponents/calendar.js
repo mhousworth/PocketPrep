@@ -4,8 +4,9 @@ import { View } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 
 
+
 const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format)
+const _today = moment().format(_format-1)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {
@@ -14,8 +15,8 @@ class CalendarScreen extends React.Component {
       [_today]: {disabled: true}
   }
   
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       _markedDates: this.initialState
@@ -28,23 +29,36 @@ class CalendarScreen extends React.Component {
   onDaySelect = (day) => {
       const _selectedDay = moment(day.dateString).format(_format);
 
+      console.log(_selectedDay);
 
-      let marked = true;
-      let markedDates = {}
-      if (this.state._markedDates[_selectedDay]) {
-        // Already in marked dates, so reverse current marked state
-        marked = !this.state._markedDates[_selectedDay].marked;
-        markedDates = this.state._markedDates[_selectedDay];
-      }
+      this.props.navigation.navigate('DayView',{
+        dayChosen: _selectedDay
+      });
+
+
+
+
+
+
+      // let marked = true;
+      // let markedDates = {}
+      // if (this.state._markedDates[_selectedDay]) {
+      //   // Already in marked dates, so reverse current marked state
+      //   marked = !this.state._markedDates[_selectedDay].marked;
+      //   markedDates = this.state._markedDates[_selectedDay];
+      // }
       
-      markedDates = {...markedDates, ...{ marked }};
+      // markedDates = {...markedDates, ...{ marked }};
       
-      // Create a new object using object property spread since it should be immutable
-      // Reading: https://davidwalsh.name/merge-objects
-      const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } }
+      // // Create a new object using object property spread since it should be immutable
+      // // Reading: https://davidwalsh.name/merge-objects
+      // const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
       
-      // Triggers component to render again, picking up the new state
-      this.setState({ _markedDates: updatedMarkedDates });
+      // console.log(day.dateString);
+      // // Triggers component to render again, picking up the new state
+      // this.setState({ _markedDates: updatedMarkedDates });
+
+
   }
   
   render() {
@@ -54,7 +68,7 @@ class CalendarScreen extends React.Component {
             theme={{dotColor: 'red', monthTextColor: 'orange'
         }}
             
-            pastScrollRange={1}
+            pastScrollRange={0}
             futureScrollRange={1}
 
             // we use moment.js to give the minimum and maximum dates.

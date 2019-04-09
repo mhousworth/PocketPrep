@@ -1,11 +1,15 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
-import ShoppingListScreen from "./src/components/shopping"
+import ShoppingListScreen from "./src/components/shoppingListComponents/shopping"
 import HomeScreen from "./src/components/home"
-import CalendarScreen from './src/components/calendar';
-import PresetScreen from './src/components/preset';
-import AddScreen from './src/components/add-meal';
+import CalendarScreen from './src/components/calendarComponents/calendar';
+import PresetScreen from './src/components/viewMealsComponents/preset';
+import AddScreen from './src/components/editMealsComponents/add-new-meal';
+import CustomScreen from './src/components/viewMealsComponents/custom-meal';
+import IngredientScreen from './src/components/viewMealsComponents/ingredients';
 import DebugScreen from './src/components/debug';
+import viewDayScreen from './src/components/calendarComponents/day-view'
+import viewDayAddMeal from './src/components/calendarComponents/day-add-meal'
 
 const RootStack = createStackNavigator(
   {
@@ -14,13 +18,17 @@ const RootStack = createStackNavigator(
     Calendar: CalendarScreen,
     Preset: PresetScreen,
     AddRecipe: AddScreen,
-	Debug: DebugScreen
+    CustomMeal: CustomScreen,
+    Ingredients: IngredientScreen,
+    Debugger:DebugScreen,
+    DayView: viewDayScreen,
+	DayAddMeal: viewDayAddMeal
   },
   {
     initialRouteName: 'Home',
   }
 );
-console.log("begin");
+
 const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.Component {

@@ -9,6 +9,9 @@ class mealplan {
 			this.Dinner = [];
 		}
 
+		
+		
+		//TODO: Handle amounts of the same meal name, OR do not add duplicates
 		//Add name of meal to appropriate "meal time"
 		add(t,m) {
 			if (t == 'B')
@@ -74,63 +77,85 @@ export default class MealManager {
 	
 		//Get/create filepath
 		this.fileUri = FileSystem.documentDirectory + 'mealplan.json';
-		if ( FileSystem.getInfoAsync(this.fileUri).exists == true) {
+		this.MealPlanCalendar = null;
+	}
+	
+	//MUST CALL AFTER CREATING MEALMANAGER OBJECT
+	//The point is to call this function using await, since the constructor is not async you cannot await it.
+	//Therefore you create the object and then call its init() function
+	async init() {
+		
+		let fileInfo = await FileSystem.getInfoAsync(this.fileUri);
+		
+		if ( fileInfo["exists"] == true ) {
 			console.log('mealplan file exists');
 			
-			//FileSystem reads are asynchronous, must await before creating MealPlanCalendar object
-			fileread = async () => {
-				let result = null;
+			let result = null;
 			
-				try {
-					//Wait for FileSystem read to return a result string
-					result = await FileSystem.readAsStringAsync(this.fileUri);
-				
-				} catch(e) {
+			try {
+				//Wait for FileSystem read to return a result string
+				result = await FileSystem.readAsStringAsync(this.fileUri);
+			
+			} catch(e) {
 				console.log(e);
-				}
-				//Parse result to object and store in MealPlanCalendar
-				this.MealPlanCalendar = JSON.parse(result);
 			}
-			//Run async function
-			fileread();
+			//Parse result to object and store in MealPlanCalendar
+			this.MealPlanCalendar = JSON.parse(result);
+			console.log(result);
 		}
 		else {
 			console.log('mealplan file does not exist');
 			//create the file based on app's asset
-			let newfile = '{}';
-			FileSystem.writeAsStringAsync(this.fileUri, newfile);
+			this.MealPlanCalendar = require('../../data/meal-plan'); 
+			FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify(this.MealPlanCalendar));
+			FileSystem.readAsStringAsync(this.fileUri).then( (filedata) => {console.log(filedata)});
 		}
+
+	}
+	
+	//Probably don't need this anymore
+	static async asyncConstructor() {
+		let MM = new MealManager();
+		return MM;
 	}
 	
 	//get mealplan object from MealPlanCalendar
 	//Parameter: date associated with mealplan
 	getMealPlan(d){	
+		
 		return this.MealPlanCalendar[d];
 	}
+	
+	//getMealPlanString(d,t){}
 
 
 	//add/append mealplan within MealPlanCalendar
 	//Parameters: d = date (XX-XX-XXXX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
 	addmeal(d, t, m) {
 	
-	//Create mealplan object
-	let mp = new mealplan();
-	
 		//if there is not an existing mealplan
-		if( this.MealPlanCalendar[d] == null ) {
+		if( this.MealPlanCalendar[d] == null || this.MealPlanCalendar[d] == undefined ) {
+			
+			//Create mealplan object
+			let mp = new mealplan();
 			
 			//Add to meal plan according to Breakfast, Lunch, or Dinner
-			mp.add(t,m);
+			mp = this.arrayAdd(mp,t,m);
 			
 			//append mealplan to MealPlanCalendar
 			this.MealPlanCalendar[d] = mp;
 		}
 		else {
+
+			console.log('t: ' + t);
+		
 			//Retrieve mealplan from calendar
 			mp = this.MealPlanCalendar[d];
 			
+			console.log('mp old: ' + JSON.stringify(mp));
+			
 			//add the meal to mealplan object
-			mp.add(t,m);
+			mp = this.arrayAdd(mp,t,m);
 			
 			//append meal in MealPlanCalendar
 			this.MealPlanCalendar[d] = mp;
@@ -143,6 +168,19 @@ export default class MealManager {
 		console.log("added " + m);
 		
 		return;
+	}
+	
+	//Replacement for mp.add, may fix later and continue using mp.add if successfully typecasted
+	arrayAdd(mp,t,m) {
+		if (t == 'B' || t == 0)
+			mp.Breakfast.push(m);
+		else if (t == 'L' || t == 1)
+			mp.Lunch.push(m);
+		else if (t == 'D' || t == 2)
+			mp.Dinner.push(m);
+		
+		console.log('mp new: ' + JSON.stringify(mp));
+		return mp;
 	}
 	
 	//Testing Purposes
