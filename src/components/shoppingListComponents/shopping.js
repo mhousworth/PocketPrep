@@ -26,7 +26,7 @@ class ShoppingListScreen extends React.Component {
     
     
       return (
-        <View>
+        <View style={{flex: 1}}>
             <Header
             placement="left"
             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -38,6 +38,7 @@ class ShoppingListScreen extends React.Component {
                 {
                     this.state.ingredients.map((item) => (
                       <CheckBox
+                      key={item["index"]}
                       title={item["ingredient"]}
                       checked={item["isChecked"]}
                       onPress={this.checkIngredients.bind(this,item["index"],item["ingredient"])}
@@ -45,6 +46,7 @@ class ShoppingListScreen extends React.Component {
                     ))
                 }
             </ScrollView>
+            
         </View>
       );
     }
@@ -72,6 +74,7 @@ class ShoppingListScreen extends React.Component {
         }
       }
     }
+    shoppingList.pop();
     return shoppingList;
    }
 

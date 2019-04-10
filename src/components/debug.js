@@ -21,7 +21,11 @@ class DebugScreen extends React.Component {
             title="Print File to Console"
             onPress={() => mm.printFile() }
           />
-        </View>
+      <Button
+            title="Print File to Console"
+            onPress={() => mm.printFile() }
+          />
+      </View>
       );
     }
   }
