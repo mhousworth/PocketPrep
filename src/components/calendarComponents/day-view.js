@@ -9,15 +9,17 @@ class viewDayScreen extends React.Component {
 	constructor (props) {
         super(props)
         this.state = {
-        selectedIndex: 2,
-        plan:''
+        selectedIndex: 2
         }
         this.updateIndex = this.updateIndex.bind(this);
 		
-		this.MM;
-	
+		this.MM = null;
+		
+		this.plan = '';
 		
 		this.constructMealPlan();
+		
+		this.isLoading = true;
     }
 	
 	async constructMealPlan() {
@@ -26,9 +28,13 @@ class viewDayScreen extends React.Component {
 		
 		await mm.init();
 		
-		console.log('mealplan object: ' + JSON.stringify(mm));
+		this.MM = mm;
+		
+		//console.log('mealplancalendar object: ' + JSON.stringify(mm));
 		
 		let mp = mm.getMealPlan(this.props.navigation.state.params.dayChosen);
+		
+		console.log('mealplan object: ' + JSON.stringify(mp));
 		
 		if(mp == undefined)
 			return;
@@ -46,17 +52,28 @@ class viewDayScreen extends React.Component {
 		if(D.length > 0)
 			D.forEach(function(element) { Dstr += (element + '\n'); });
 		
-		this.setState({plan:'Breakfast: ' + Bstr + '\nLunch: ' + Lstr + '\nDinner: ' + Dstr});
+		this.plan = 'Breakfast: ' + Bstr + '\nLunch: ' + Lstr + '\nDinner: ' + Dstr;
+		
+		this.setState({isLoading : false});
 	}
     
-    updateIndex (index) {
-        this.setState({selectedIndex:index});
+    updateIndex (selectedIndex) {
+        this.setState({selectedIndex})
     }
 
 
   render() {
-    const buttons = ['Breakfast', 'Lunch', 'Dinner'];
-    const { selectedIndex } = this.state;
+    const buttons = ['Breakfast', 'Lunch', 'Dinner']
+    const { selectedIndex } = this.state
+
+    dayChosen = this.props.navigation.state.params.dayChosen
+
+    currIndex = selectedIndex
+	
+	if(this.state.isLoading){
+		return (<View></View>) ;
+	}
+	
       return (
         <View>
           {console.log(this.props.navigation.state.params.dayChosen)}
@@ -67,14 +84,17 @@ class viewDayScreen extends React.Component {
             rightComponent={{ icon: 'home', color: '#fff' }}
             />
             <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
-			<Text>{this.state.plan}</Text>
+			<Text>{this.plan}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
                 buttons={buttons}
                 containerStyle={{height: 100}}
             />
-        {/* <Text>{this.state.selectedIndex}</Text> */}
+			<Button title='Add a meal'
+				onPress={() => this.props.navigation.navigate('DayAddMeal', dayChosen, currIndex)}
+            />
+        
         </View>
       );
     }
