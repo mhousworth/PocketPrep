@@ -19,11 +19,22 @@ class CalendarScreen extends React.Component {
   
   constructor(props) {
     super(props);
-    this.MealManage = new MealManager();
+    this.MealManage = null;
     this.state = {
       _markedDates: this.initialState
     }
+    this.constructMealPlan();
   }
+
+  async constructMealPlan() {
+
+  let mm = new MealManager();
+
+      await mm.init();
+      
+      this.MealManage = mm;
+
+	}
   
   // Could use this to navigate to a new page
   // probably something like: navigation.navigate('MealList', {day.dateString})
@@ -38,6 +49,8 @@ class CalendarScreen extends React.Component {
   }
   
   render() {
+    let date1 = moment(_today.dateString).format(_format);
+    let date2 = moment().add(1, 'days').format(_format);
     return (
       <View style={{flex: 1}}>
         <CalendarList
@@ -60,25 +73,34 @@ class CalendarScreen extends React.Component {
         />
         <Button
           title= 'Compile Shopping List'
-          onPress ={this.handleSend.bind(_today, _today+1)}
+          onPress ={this.handleSend.bind(this,[date1,date2])}
         />
       </View>
     );
   }
-  handleSend(date1, date2){
-    meallist = this.MM.getMealPlan(date1);
-    // concatenate with mealplan for tomorrow
-    meallist += this.MM.getMealPlan(date2);
+  handleSend(dates){
+    // Account for :
+    //    - Undefined(Days with no meals set)
+    //    - MealPlan({"Breakfast":[],"Lunch":[],"Dinner":[]})
+    
+    let mealNames = [];
+    // Extracts each date and collects all meal names
+    // Stores an array of all meal names (string[] mealNames)
+    dates.map((d) => {
+      let plan = this.MealManage.getMealPlan(d);
+      if(plan !== undefined){
+          mealNames=mealNames.concat(plan["Breakfast"],plan["Lunch"],plan["Dinner"]);
+      }
+    });
 
-    // parse meallist for mealnames
 
     // send array of mealnames through .createShoppingList
 
     // navigate to the shopping list
 
-    // this.props.navigation.navigate('List')
-
-    console.log(meallist);
+    this.props.navigation.navigate('List',{compileNames:mealNames});
+    return;
+    
   }
 }
 

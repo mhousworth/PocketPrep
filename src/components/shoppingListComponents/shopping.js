@@ -6,10 +6,19 @@ import recipeDb from "../../data/recipe"
 class ShoppingListScreen extends React.Component {
   constructor(props){
     super(props);
-
+    let mealNames 
+    // If mealNames is empty, it will generate an empty list
+    // Only occurs when accessing through home menu
+    try{
+        mealNames= this.props.navigation.state.params.compileNames;
+    }
+    catch(e){
+        mealNames=[];
+    }
+  
     // Ingredients holds all ingredients of selected meals
     this.state={
-      ingredients:(this.createShoppingList(["School's Out Scalloped Potatoes", "Lentil Vegetable Soup", "Healthy Breakfast Muffins"]))
+      ingredients:(this.createShoppingList(mealNames))
     }
 
   }
