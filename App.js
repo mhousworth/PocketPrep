@@ -9,6 +9,7 @@ import CustomScreen from './src/components/viewMealsComponents/custom-meal';
 import IngredientScreen from './src/components/viewMealsComponents/ingredients';
 import DebugScreen from './src/components/debug';
 import viewDayScreen from './src/components/calendarComponents/day-view'
+import viewDayAddMeal from './src/components/calendarComponents/day-add-meal'
 
 const RootStack = createStackNavigator(
   {
@@ -20,7 +21,8 @@ const RootStack = createStackNavigator(
     CustomMeal: CustomScreen,
     Ingredients: IngredientScreen,
     Debugger:DebugScreen,
-    DayView: viewDayScreen
+    DayView: viewDayScreen,
+	DayAddMeal: viewDayAddMeal
   },
   {
     initialRouteName: 'Home',

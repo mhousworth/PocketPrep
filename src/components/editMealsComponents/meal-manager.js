@@ -10,6 +10,7 @@ class mealplan {
 		}
 
 		
+		
 		//TODO: Handle amounts of the same meal name, OR do not add duplicates
 		//Add name of meal to appropriate "meal time"
 		add(t,m) {
@@ -75,7 +76,8 @@ export default class MealManager {
 	constructor(){
 	
 		//Get/create filepath
-		this.fileUri = FileSystem.documentDirectory + 'meals.json';
+		this.fileUri = FileSystem.documentDirectory + 'mealplan.json';
+		this.MealPlanCalendar = null;
 	}
 	
 	//MUST CALL AFTER CREATING MEALMANAGER OBJECT
@@ -120,6 +122,7 @@ export default class MealManager {
 	//get mealplan object from MealPlanCalendar
 	//Parameter: date associated with mealplan
 	getMealPlan(d){	
+		
 		return this.MealPlanCalendar[d];
 	}
 	
@@ -130,24 +133,29 @@ export default class MealManager {
 	//Parameters: d = date (XX-XX-XXXX), t = time of meal ('B' 'L' or 'D'), m = name of meal/recipe
 	addmeal(d, t, m) {
 	
-	//Create mealplan object
-	let mp = new mealplan();
-	
 		//if there is not an existing mealplan
-		if( this.MealPlanCalendar[d] == null ) {
+		if( this.MealPlanCalendar[d] == null || this.MealPlanCalendar[d] == undefined ) {
+			
+			//Create mealplan object
+			let mp = new mealplan();
 			
 			//Add to meal plan according to Breakfast, Lunch, or Dinner
-			mp.add(t,m);
+			mp = this.arrayAdd(mp,t,m);
 			
 			//append mealplan to MealPlanCalendar
 			this.MealPlanCalendar[d] = mp;
 		}
 		else {
+
+			console.log('t: ' + t);
+		
 			//Retrieve mealplan from calendar
 			mp = this.MealPlanCalendar[d];
 			
+			console.log('mp old: ' + JSON.stringify(mp));
+			
 			//add the meal to mealplan object
-			mp.add(t,m);
+			mp = this.arrayAdd(mp,t,m);
 			
 			//append meal in MealPlanCalendar
 			this.MealPlanCalendar[d] = mp;
@@ -160,6 +168,19 @@ export default class MealManager {
 		console.log("added " + m);
 		
 		return;
+	}
+	
+	//Replacement for mp.add, may fix later and continue using mp.add if successfully typecasted
+	arrayAdd(mp,t,m) {
+		if (t == 'B' || t == 0)
+			mp.Breakfast.push(m);
+		else if (t == 'L' || t == 1)
+			mp.Lunch.push(m);
+		else if (t == 'D' || t == 2)
+			mp.Dinner.push(m);
+		
+		console.log('mp new: ' + JSON.stringify(mp));
+		return mp;
 	}
 	
 	//Testing Purposes
