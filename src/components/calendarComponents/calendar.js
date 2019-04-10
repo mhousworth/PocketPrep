@@ -1,7 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import { View } from 'react-native';
+import { Button } from 'react-native-elements'
 import { CalendarList } from 'react-native-calendars';
+import MealManager from '../editMealsComponents/meal-manager';
 
 
 
@@ -17,7 +19,7 @@ class CalendarScreen extends React.Component {
   
   constructor(props) {
     super(props);
-
+    this.MealManage = new MealManager();
     this.state = {
       _markedDates: this.initialState
     }
@@ -29,35 +31,9 @@ class CalendarScreen extends React.Component {
   onDaySelect = (day) => {
       const _selectedDay = moment(day.dateString).format(_format);
 
-      console.log(_selectedDay);
-
       this.props.navigation.navigate('DayView',{
         dayChosen: _selectedDay
       });
-
-
-
-
-
-
-      // let marked = true;
-      // let markedDates = {}
-      // if (this.state._markedDates[_selectedDay]) {
-      //   // Already in marked dates, so reverse current marked state
-      //   marked = !this.state._markedDates[_selectedDay].marked;
-      //   markedDates = this.state._markedDates[_selectedDay];
-      // }
-      
-      // markedDates = {...markedDates, ...{ marked }};
-      
-      // // Create a new object using object property spread since it should be immutable
-      // // Reading: https://davidwalsh.name/merge-objects
-      // const updatedMarkedDates = {...this.state._markedDates, ...{ [_selectedDay]: markedDates } };
-      
-      // console.log(day.dateString);
-      // // Triggers component to render again, picking up the new state
-      // this.setState({ _markedDates: updatedMarkedDates });
-
 
   }
   
@@ -69,7 +45,7 @@ class CalendarScreen extends React.Component {
         }}
             
             pastScrollRange={0}
-            futureScrollRange={1}
+            futureScrollRange={2}
 
             // we use moment.js to give the minimum and maximum dates.
             minDate={_today}
@@ -82,8 +58,27 @@ class CalendarScreen extends React.Component {
 
             //Would like to get this working with: markingType={'period'}, but currently only implemented for default marking
         />
+        <Button
+          title= 'Compile Shopping List'
+          onPress ={this.handleSend.bind(_today, _today+1)}
+        />
       </View>
     );
+  }
+  handleSend(date1, date2){
+    meallist = this.MM.getMealPlan(date1);
+    // concatenate with mealplan for tomorrow
+    meallist += this.MM.getMealPlan(date2);
+
+    // parse meallist for mealnames
+
+    // send array of mealnames through .createShoppingList
+
+    // navigate to the shopping list
+
+    // this.props.navigation.navigate('List')
+
+    console.log(meallist);
   }
 }
 
