@@ -188,5 +188,3 @@ export default class MealManager {
 		FileSystem.readAsStringAsync(this.fileUri).then( (filedata) => {console.log(filedata)});
 	}
 }
-
-

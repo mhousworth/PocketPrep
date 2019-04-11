@@ -6,10 +6,19 @@ import recipeDb from "../../data/recipe"
 class ShoppingListScreen extends React.Component {
   constructor(props){
     super(props);
-
+    let mealNames 
+    // If mealNames is empty, it will generate an empty list
+    // Only occurs when accessing through home menu
+    try{
+        mealNames= this.props.navigation.state.params.compileNames;
+    }
+    catch(e){
+        mealNames=[];
+    }
+  
     // Ingredients holds all ingredients of selected meals
     this.state={
-      ingredients:(this.createShoppingList(["School's Out Scalloped Potatoes", "Lentil Vegetable Soup", "Healthy Breakfast Muffins"]))
+      ingredients:(this.createShoppingList(mealNames))
     }
 
   }
@@ -17,7 +26,7 @@ class ShoppingListScreen extends React.Component {
     
     
       return (
-        <View>
+        <View style={{flex: 1}}>
             <Header
             placement="left"
             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -29,6 +38,7 @@ class ShoppingListScreen extends React.Component {
                 {
                     this.state.ingredients.map((item) => (
                       <CheckBox
+                      key={item["index"]}
                       title={item["ingredient"]}
                       checked={item["isChecked"]}
                       onPress={this.checkIngredients.bind(this,item["index"],item["ingredient"])}
@@ -36,6 +46,7 @@ class ShoppingListScreen extends React.Component {
                     ))
                 }
             </ScrollView>
+            
         </View>
       );
     }
@@ -63,6 +74,7 @@ class ShoppingListScreen extends React.Component {
         }
       }
     }
+    shoppingList.pop();
     return shoppingList;
    }
 
