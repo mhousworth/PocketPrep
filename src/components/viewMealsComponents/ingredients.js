@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView  } from 'react-native';
 import { Header,ListItem } from 'react-native-elements'
-import shoppingList from "../../data/shopping-list"
+// import shoppingList from "../../data/shopping-list"
 import recipeDb from "../../data/recipe"
 // import console = require('console');
 
@@ -19,8 +19,7 @@ class IngredientScreen extends React.Component {
   render() {
     this.state.ingredients=(this.createIngredientsList([this.state.title]));
       return (
-        <View>
-          {}
+        <View style={{flex: 1}}>
             <Header
             placement="left"
             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -62,6 +61,7 @@ class IngredientScreen extends React.Component {
         }
       
     }
+    ingredientsList.pop()
     return ingredientsList;
    }
   }

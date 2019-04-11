@@ -12,7 +12,11 @@ class DebugScreen extends React.Component {
             title={"Reset local mealplan.json file"}
             onPress={() => FileSystem.deleteAsync(FileSystem.documentDirectory + 'mealplan.json') }
           />
-        </View>
+      <Button
+            title="Print File to Console"
+            onPress={() => mm.printFile() }
+          />
+      </View>
       );
     }
   }
