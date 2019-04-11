@@ -57,6 +57,8 @@ class viewDayAddMeal extends React.Component {
         </View>
       );
     }
+	
+	
 
   }
   export default viewDayAddMeal;
