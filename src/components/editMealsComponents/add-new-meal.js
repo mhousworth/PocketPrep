@@ -1,7 +1,7 @@
 import React from 'react';
 import { View  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Text,Input,Button, Divider } from 'react-native-elements';
+import { Text,Input,Button, Divider,List,ListItem } from 'react-native-elements';
 import { FileSystem } from 'expo';
 
 
@@ -59,28 +59,51 @@ class AddScreen extends React.Component {
       return (
         <View>
             <Text h3>New Recipe</Text>
-            <Button title="Add New" onPress={this.handleAddIngredient.bind(this)}></Button>
-            <Button title={"Submit "} onPress={this.handleSubmitsIngredient.bind(this)}></Button>
             <Divider/>
-            <ScrollView>
+            <View>
                 <Input placeholder="Type Here"
                         label="Name of Meal"
                         onChangeText={(text) => this.setState({name:text})}
                         value={this.state.name}/>
-                <Divider/>
+                
                 <Input placeholder="Type Here"
                         label={"Ingredient #"+this.state.counter}
                         onChangeText={(text) => this.setState({ingName:text})}
                         value={this.state.ingName}/>
-                <Input placeholder="Type Here"
-                        label="Measurement Type"
-                        onChangeText={(text) => this.setState({ingType:text})}
-                        value={this.state.ingType}/>  
-                <Input placeholder="Type Here"
-                        label="Amount"
-                        onChangeText={(text) => this.setState({ingAmount:text})}
-                        value={this.state.ingAmount}/>        
+                <View style={{flexDirection: 'row'}}>
+                    <View style={{width:'50%'}}>
+                        <Input placeholder="Type Here"
+                                label="Measurement Type"
+                                onChangeText={(text) => this.setState({ingType:text})}
+                                value={this.state.ingType}/>
+                    </View>
+                    <View style={{width:'50%'}}>
+                        <Input placeholder="Type Here"
+                                label="Amount"
+                                onChangeText={(text) => this.setState({ingAmount:text})}
+                                value={this.state.ingAmount}/>
+                    </View>
+                  
+                </View>     
+            </View>
+            <ScrollView style={{height:'25%'}}>
+              {
+                this.state.ingredients.map((item)=>{
+                  return(
+                    <ListItem
+                      title={item.name}
+                    />
+
+                  );
+                })
+              }
             </ScrollView>
+            
+
+            
+
+            <Button title="Add New" onPress={this.handleAddIngredient.bind(this)}></Button>
+            <Button title={"Submit "} onPress={this.handleSubmitsIngredient.bind(this)}></Button>
         </View>
       );
     }
