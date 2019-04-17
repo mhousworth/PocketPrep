@@ -33,7 +33,7 @@ class DebugScreen extends React.Component {
 		/>
 		<Button
 			title="Remove "
-			onPress={() => mm.removeMeal("2019-04-11","D", "Clam Chowder") }
+			onPress={() => mm.removeMeal("2019-05-11","B", "Farmer's Breakfast") }
 		/>
 		<Button
 			title="Print File to Console"
