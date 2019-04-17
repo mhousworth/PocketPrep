@@ -2,16 +2,25 @@ import { FileSystem } from 'expo';
 import { Asset } from 'expo';
 
 class mealplan {
-		constructor(){
-			//Arrays for each "meal time", holds strings of meal names
+		
+		constructor(mp) {
 			this.Breakfast = [];
 			this.Lunch = [];
 			this.Dinner = [];
+			
+			if(mp == null)
+				return;
+			
+			if(mp.Breakfast != null && mp.Breakfast != undefined)
+				this.Breakfast = mp.Breakfast;
+			if(mp.Lunch != null && mp.Lunch != undefined)
+				this.Lunch = mp.Lunch;
+			if(mp.Dinner != null && mp.Dinner != undefined)
+				this.Dinner = mp.Dinner;
 		}
-
 		
 		
-		//TODO: Handle amounts of the same meal name, OR do not add duplicates
+		//TODO: Handle amounts of the same meal name, preventing duplicate entries
 		//Add name of meal to appropriate "meal time"
 		add(t,m) {
 			if (t == 'B')
@@ -137,7 +146,7 @@ export default class MealManager {
 		if( this.MealPlanCalendar[d] == null || this.MealPlanCalendar[d] == undefined ) {
 			
 			//Create mealplan object
-			let mp = new mealplan();
+			let mp = new mealplan(null);
 			
 			//Add to meal plan according to Breakfast, Lunch, or Dinner
 			mp = this.arrayAdd(mp,t,m);
@@ -147,8 +156,6 @@ export default class MealManager {
 		}
 		else {
 
-			console.log('t: ' + t);
-		
 			//Retrieve mealplan from calendar
 			mp = this.MealPlanCalendar[d];
 			
@@ -170,6 +177,35 @@ export default class MealManager {
 		return;
 	}
 	
+	removeMeal(d,t,m) {
+		
+		if(this.MealPlanCalendar[d] == null || this.MealPlanCalendar[d] == undefined )
+			return false;
+		else {
+			//Retrieve mealplan from calendar
+			mp = this.MealPlanCalendar[d];
+			
+			//add the meal to mealplan object
+			let result = this.arrayRemove(mp,t,m);
+			
+			// If a matching meal wasn't found, cannot remove anything return false/result
+			if(!result)
+				return result;
+			
+			//append meal in MealPlanCalendar
+			this.MealPlanCalendar[d] = mp;
+			
+			//Writes Object/Data_structure to file
+			FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify(this.MealPlanCalendar));
+			
+			//Output for debug/testing purposes
+			console.log("removed " + m);
+			
+			//Remove Successful
+			return result;
+		}
+	}
+	
 	//Replacement for mp.add, may fix later and continue using mp.add if successfully typecasted
 	arrayAdd(mp,t,m) {
 		if (t == 'B' || t == 0)
@@ -181,6 +217,52 @@ export default class MealManager {
 		
 		console.log('mp new: ' + JSON.stringify(mp));
 		return mp;
+	}
+	
+	arrayRemove(mp,t,m) {
+		//Temp array
+		arr = [];
+		
+		//Copy array based on time of meal 't'
+		if (t == 'B')
+			arr = mp.Breakfast;
+		else if (t == 'L')
+			arr = mp.Lunch;
+		else if (t == 'D')
+			arr = mp.Dinner;
+		
+		//Search for matching entry
+		i = 0;
+		while(arr[i] != m && i < arr.length)
+			i++;
+		
+		//Check if loop finished without finding matching entry
+		if(arr[i] != m)
+			return false;
+		
+		if(i == 0)
+			//if first entry is a match we can shift to remove
+			arr.shift();
+		else if(i == arr.length-1)
+			//if last entry is a match we can pop to remove
+			arr.pop();
+		else {
+			//Slice a left and right array, leaving out the matched entry
+			left = arr.slice(0, i);
+			right = arr.slice(i+1, arr.length);
+			//Concat into new array
+			arr = left.concat(right);
+		}
+		
+		//Copy new array into original previously copied.
+		if (t == 'B' || t == 0)
+			mp.Breakfast = arr;
+		else if (t == 'L' || t == 1)
+			mp.Lunch = arr;
+		else if (t == 'D' || t == 2)
+			mp.Dinner = arr;
+		
+		return true;
 	}
 	
 	//Testing Purposes

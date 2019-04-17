@@ -49,7 +49,7 @@ class viewDayAddMeal extends React.Component {
                     <ListItem
                         key={i}
                         title={l.name}
-                        onPress={() => this.MM.addmeal(dayChosen,currIndex,l.name)}
+                        onPress = {() => this.MM.addmeal(dayChosen,currIndex,l.name)}
                     />
                     ))
                 }
