@@ -36,21 +36,22 @@ class viewDayScreen extends React.Component {
 		
 		console.log('mealplan object: ' + JSON.stringify(mp));
 		
-		if(mp == undefined)
-			return;
-		
-		let B = mp.Breakfast;
-		let L = mp.Lunch;
-		let D = mp.Dinner;
-		
 		let Bstr = '', Lstr = '', Dstr = '';
 		
-		if(B.length > 0)
-			B.forEach(function(element) { Bstr += (element + '\n'); });
-		if(L.length > 0)
-			L.forEach(function(element) { Lstr += (element + '\n'); });
-		if(D.length > 0)
-			D.forEach(function(element) { Dstr += (element + '\n'); });
+		if(mp != undefined) {
+			
+			let B = mp.Breakfast;
+			let L = mp.Lunch;
+			let D = mp.Dinner;
+		
+			if(B.length > 0)
+				B.forEach(function(element) { Bstr += (element + '\n'); });
+			if(L.length > 0)
+				L.forEach(function(element) { Lstr += (element + '\n'); });
+			if(D.length > 0)
+				D.forEach(function(element) { Dstr += (element + '\n'); });
+		}
+		
 		
 		this.plan = 'Breakfast: ' + Bstr + '\nLunch: ' + Lstr + '\nDinner: ' + Dstr;
 		

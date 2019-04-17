@@ -41,6 +41,7 @@ class ShoppingListScreen extends React.Component {
                       key={item["index"]}
                       title={item["ingredient"]}
                       checked={item["isChecked"]}
+                      // subtitle={item["mealName"]}
                       onPress={this.checkIngredients.bind(this,item["index"],item["ingredient"])}
                     />
                     ))
@@ -58,8 +59,8 @@ class ShoppingListScreen extends React.Component {
       for (let mealNameIndex = 0; mealNameIndex < mealNames.length; mealNameIndex++ ) {
         for (let recipeIndex = 0; recipeIndex < recipeDb.length; recipeIndex++) {
           if (recipeDb[recipeIndex].name == mealNames[mealNameIndex]) {
-            let tempname = "Ingredients for " + mealNames[mealNameIndex];
-            shoppingList.push({ingredient:tempname});
+            // let tempname = "Ingredients for " + mealNames[mealNameIndex];
+            // shoppingList.push({ingredient:tempname});
             for (ingredientIndex = 0; ingredientIndex < recipeDb[recipeIndex].ingredients.length; ingredientIndex++) {
               let temp = "";
                 if (recipeDb[recipeIndex].ingredients[ingredientIndex].measurement == "") {
@@ -67,7 +68,7 @@ class ShoppingListScreen extends React.Component {
                 } else {
                   temp += recipeDb[recipeIndex].ingredients[ingredientIndex].name + recipeDb[recipeIndex].ingredients[ingredientIndex].amount + " " + recipeDb[recipeIndex].ingredients[ingredientIndex].measurement;
                 }
-                shoppingList.push({ingredient:temp,isChecked:false,index:shoppingList.length});
+                shoppingList.push({ingredient:temp,isChecked:false,index:shoppingList.length,mealName:mealNames[mealNameIndex]});
           }
           shoppingList.push("");
           break;
