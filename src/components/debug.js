@@ -1,29 +1,10 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import MealManager from './editMealsComponents/meal-manager';
 import { FileSystem } from 'expo';
+import MealManager from "./editMealsComponents/meal-manager";
 
-
-class FileDebugger {
-  constructor(){
-    this.fileUri= FileSystem.documentDirectory;
-    this.fileInfo=null;
-  }
-  	//MUST CALL AFTER CREATING MEALMANAGER OBJECT
-	//The point is to call this function using await, since the constructor is not async you cannot await it.
-	//Therefore you create the object and then call its init() function
-	async init() {
-		
-    let fileInfo = await FileSystem.readDirectoryAsync(this.fileUri);
-    this.fileInfo=fileInfo;
-    console.log(this.fileInfo);
-  }
-  listAll(){
-    console.log(this.fileInfo);
-  }
-}
-
-
+let mm = new MealManager();
+mm.init();
 
 class DebugScreen extends React.Component {
     constructor(props){
@@ -45,24 +26,20 @@ class DebugScreen extends React.Component {
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text className="lightblue-tag">Home Screen</Text>
-          {/* <Button
-            title={"Add meal Mac&Cheese"}
-            onPress={() => this.state.mm.addmeal("2019-03-12","L","Mac&Cheese") }
-          />
-		  <Button
-            title="Add meal Beef Dip"
-            onPress={() => this.state.mm.addmeal("2019-03-14","D","Beef Dip") }
-          />
-		  <Button
-            title="Print File to Console"
-            onPress={() => this.state.mm.printFile() }
-          /> */}
-      <Button
-            title="List All Files"
-            onPress={() => this.state.debug.listAll() }
-          />
-      </View>
+			<Text className="lightblue-tag">Home Screen</Text>
+		<Button
+			title={"Reset local mealplan.json file"}
+			onPress={() => FileSystem.deleteAsync(FileSystem.documentDirectory + 'mealplan.json') }
+		/>
+		<Button
+			title="Remove "
+			onPress={() => mm.removeMeal("2019-04-11","D", "Clam Chowder") }
+		/>
+		<Button
+			title="Print File to Console"
+			onPress={() => mm.printFile() }
+		/>
+		</View>
       );
     }
   }
