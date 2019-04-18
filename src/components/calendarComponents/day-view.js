@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView  } from 'react-native';
-import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup } from 'react-native-elements';
+import { View, ScrollView } from 'react-native';
+import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup, Overlay } from 'react-native-elements';
 import MealManager from '../editMealsComponents/meal-manager';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,7 +20,8 @@ class viewDayScreen extends React.Component {
 		
 		this.state = {
         selectedIndex: 0,
-		activeList: this.bArray
+		activeList: this.bArray,
+		overlayVisible: false
         }
         this.updateIndex = this.updateIndex.bind(this);
 		
@@ -78,6 +79,12 @@ class viewDayScreen extends React.Component {
       return (
         <View>
           {console.log(this.props.navigation.state.params.dayChosen)}
+			<Overlay 
+				isVisible={this.state.overlayVisible}
+				onBackdropPress={ this.hideOverlay.bind(this) }
+			>
+				<Text>'Hello from Overlay!'</Text>
+			</Overlay>
             <Header
             placement="left"
             leftComponent={{ icon: 'menu', color: '#fff' }}
@@ -95,14 +102,16 @@ class viewDayScreen extends React.Component {
 				{
 					this.state.activeList.map( (name) => (
 					<ListItem
+						key={name}
                         title={name}
 						topDivider={true}
 						bottomDivider={true}
-						// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+						// TODO: Need Icon to be touchable/button, to display overlay message to confirm deleting meal
 						rightIcon=<Icon 
 							name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
 							size = {28}
 							color = 'red'
+							onPress = { this.displayOverlay.bind(this) }
 						/>
                     />
 					))
@@ -115,6 +124,14 @@ class viewDayScreen extends React.Component {
         </View>
       );
     }
+	
+	displayOverlay(){
+		this.setState({overlayVisible:true});
+	}
+	
+	hideOverlay(){
+		this.setState({overlayVisible:false});
+	}
 
   }
   export default viewDayScreen;

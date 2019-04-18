@@ -47,6 +47,7 @@ class viewDayAddMeal extends React.Component {
                 {
                     recipeData.map((l, i) => (
                     <ListItem
+						key={i}
                         key={i}
                         title={l.name}
                         onPress={this.handleAddMeal.bind(this,dayChosen,currIndex,l.name)}
