@@ -98,7 +98,7 @@ class CalendarScreen extends React.Component {
 
     // navigate to the shopping list
 
-    this.props.navigation.navigate('List',{compileNames:mealNames});
+    this.props.navigation.navigate('Shopping',{compileNames:mealNames});
     return;
     
   }
