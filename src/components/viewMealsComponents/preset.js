@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView  } from 'react-native';
-import { Header,ListItem } from 'react-native-elements'
-import recipeData from '../../data/recipe'
+import { Header,ListItem } from 'react-native-elements';
+import recipeData from '../../data/recipe';
 
 class PresetScreen extends React.Component {
     render() {
