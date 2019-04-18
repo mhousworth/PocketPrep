@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView  } from 'react-native';
-import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup } from 'react-native-elements';
+import { View, ScrollView } from 'react-native';
+import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup, Overlay } from 'react-native-elements';
 import MealManager from '../editMealsComponents/meal-manager';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,12 +19,12 @@ class viewDayScreen extends React.Component {
 		this.constructMealPlan();
 		let currDate = this.props.navigation.state.params.dayChosen;
 		this.state = {
-        selectedIndex: 0,
-				activeList: this.bArray,
-				currDate:currDate
-		}
-
-		this.updateIndex = this.updateIndex.bind(this);
+			selectedIndex: 0,
+			activeList: this.bArray,
+			currDate:currDate,
+			overlayVisible: false
+        }
+        this.updateIndex = this.updateIndex.bind(this);
 		
 		this.isLoading = true;
     }
@@ -78,9 +78,24 @@ class viewDayScreen extends React.Component {
 		}
 	
       return (
+	  
         <View style={{backgroundColor:'#79bd9a',flex:1}} >
           {console.log(this.state.currDate)}
+		  
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
+			<Overlay 
+				isVisible={this.state.overlayVisible}
+				onBackdropPress={ this.hideOverlay.bind(this) }
+			>
+				<Text>'Hello from Overlay!'</Text>
+			</Overlay>
+            <Header
+            placement="left"
+            leftComponent={{ icon: 'menu', color: '#fff' }}
+            centerComponent={{ text: this.props.navigation.state.params.dayChosen, style: { color: '#fff' } }}
+            rightComponent={{ icon: 'home', color: '#fff' }}
+            />
+            <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
@@ -91,17 +106,17 @@ class viewDayScreen extends React.Component {
 				{
 					this.state.activeList.map( (name) => (
 					<ListItem
-							key={name}
-							title={name}
-							topDivider={true}
-							bottomDivider={true}
-							// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
-							rightIcon={<Icon 
-								name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
-								size = {28}
-								color = 'red'
-								onPress={this.handleDeleteMeal.bind(this,name)}
-							/>}
+						key={name}
+                        title={name}
+						topDivider={true}
+						bottomDivider={true}
+						// TODO: Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+						rightIcon=<Icon 
+							name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+							size = {28}
+							color = 'red'
+							onPress = { this.displayOverlay.bind(this) }
+						/>
                     />
 					))
 				}
@@ -112,11 +127,15 @@ class viewDayScreen extends React.Component {
         
         </View>
       );
-		}
-		handleDeleteMeal(mealName){
-			console.log(mealName);
-			return;
-		}
+    }
+	
+	displayOverlay(){
+		this.setState({overlayVisible:true});
+	}
+	
+	hideOverlay(){
+		this.setState({overlayVisible:false});
+	}
 
   }
   export default viewDayScreen;
