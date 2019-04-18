@@ -4,7 +4,7 @@ import { Header,ListItem,Divider, ButtonGroup } from 'react-native-elements';
 import recipeData from '../../data/recipe';
 import { FileSystem } from 'expo';
 
-class PresetScreen extends React.Component {
+class MealScreen extends React.Component {
     constructor(props){
         super(props);
 
@@ -84,6 +84,8 @@ class PresetScreen extends React.Component {
                     <ListItem
                         key={l.name}
                         title={l.name}
+                        topDivider={true}
+                        bottomDivider={true}
                         // onPress={this.handleMealSend.bind(this,l.name)}
                     />
                     ))
@@ -104,4 +106,4 @@ class PresetScreen extends React.Component {
 
 
   }
-  export default PresetScreen;
+  export default MealScreen;

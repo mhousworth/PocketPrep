@@ -155,7 +155,7 @@ class AddScreen extends React.Component {
           //     }
           // );
           
-          this.props.navigation.navigate('CustomMeal');
+          this.props.navigation.navigate('MealView');
       
     return;
   }

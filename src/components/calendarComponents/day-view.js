@@ -91,26 +91,32 @@ class viewDayScreen extends React.Component {
 				{
 					this.state.activeList.map( (name) => (
 					<ListItem
-                        title={name}
-						topDivider={true}
-						bottomDivider={true}
-						// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
-						rightIcon={<Icon 
-							name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
-							size = {28}
-							color = 'red'
-						/>}
+							key={name}
+							title={name}
+							topDivider={true}
+							bottomDivider={true}
+							// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+							rightIcon={<Icon 
+								name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+								size = {28}
+								color = 'red'
+								onPress={this.handleDeleteMeal.bind(this,name)}
+							/>}
                     />
 					))
 				}
 			</ScrollView>
 			<Button title='Add a meal'
-				onPress={() => this.props.navigation.navigate('DayAddMeal', this.state.currDate, currIndex)}
+				onPress={() => this.props.navigation.navigate('DayAddMeal', {dayChosen:this.state.currDate, currIndex:currIndex})}
             />
         
         </View>
       );
-    }
+		}
+		handleDeleteMeal(mealName){
+			console.log(mealName);
+			return;
+		}
 
   }
   export default viewDayScreen;
