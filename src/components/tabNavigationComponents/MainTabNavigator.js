@@ -4,13 +4,13 @@ import { Platform } from 'react-native';
 
 import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import CalendarScreen from '../calendarComponents/calendar';
 
 import ShoppingListScreen from '../shoppingListComponents/shopping';
 
-import MealListScreen from '../viewMealsComponents/preset'
+import MealListScreen from '../viewMealsComponents/view-meals'
 
 
 const CalendarStack = createSwitchNavigator({
@@ -21,9 +21,9 @@ CalendarStack.navigationOptions = {
  tabBarLabel: 'Calendar',
 
 	tabBarIcon: ({ focused }) => (
-    <Icon
+    <FontAwesome
       focused={focused}
-      name={ Platform.OS === 'ios' ? `ios-calendar${focused ? '' : '-outline'}`: 'md-calendar'}
+      name={"calendar"}
       size = {26}
     />
   ),
@@ -38,9 +38,9 @@ const ShoppingStack = createSwitchNavigator({
 ShoppingStack.navigationOptions = {
   tabBarLabel: 'Shopping List',
   tabBarIcon: ({ focused }) => (
-    <Icon
+    <FontAwesome
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-cart' : 'md-cart'}
+      name={'shopping-cart'}
       size = {26}
     />
   ),
@@ -53,8 +53,8 @@ const MealStack = createSwitchNavigator({
 MealStack.navigationOptions = {
     tabBarLabel: 'Meals',
     tabBarIcon: ({focused}) => (
-        <Icon focused = {focused}
-        name={Platform.OS === 'ios' ? 'ios-pizza' : 'md-pizza'}
+        <FontAwesome focused = {focused}
+        name={'cutlery'}
         size={26}
         />
     )

@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, ScrollView  } from 'react-native';
 import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup } from 'react-native-elements';
-import MealManager from '../editMealsComponents/meal-manager'
-
+import MealManager from '../editMealsComponents/meal-manager';
+import { Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class viewDayScreen extends React.Component {
 	
@@ -16,12 +17,14 @@ class viewDayScreen extends React.Component {
 		this.dArray = [];
 		
 		this.constructMealPlan();
-		
+		let currDate = this.props.navigation.state.params.dayChosen;
 		this.state = {
         selectedIndex: 0,
-		activeList: this.bArray
-        }
-        this.updateIndex = this.updateIndex.bind(this);
+				activeList: this.bArray,
+				currDate:currDate
+		}
+
+		this.updateIndex = this.updateIndex.bind(this);
 		
 		this.isLoading = true;
     }
@@ -36,7 +39,7 @@ class viewDayScreen extends React.Component {
 		
 		//console.log('mealplancalendar object: ' + JSON.stringify(mm));
 		
-		let mp = mm.getMealPlan(this.props.navigation.state.params.dayChosen);
+		let mp = mm.getMealPlan(this.state.currDate);
 		
 		console.log('mealplan object: ' + JSON.stringify(mp));
 		
@@ -62,51 +65,58 @@ class viewDayScreen extends React.Component {
 			this.setState({activeList:this.dArray});
     }
 
-
   render() {
-    const buttons = ['Breakfast', 'Lunch', 'Dinner']
-    const { selectedIndex } = this.state
-
-    dayChosen = this.props.navigation.state.params.dayChosen
-
-    currIndex = selectedIndex
+    const buttons = ['Breakfast', 'Lunch', 'Dinner'];
+    const { selectedIndex } = this.state;
+		let dayChosen=new Date(this.state.currDate);
+		dayChosen=dayChosen.toDateString().split(' ').slice(1).join(' ');
+    
+    currIndex = selectedIndex;
 	
-	if(this.state.isLoading){
-		return (<View></View>) ;
-	}
+		if(this.state.isLoading){
+			return (<View></View>) ;
+		}
 	
       return (
-        <View>
-          {console.log(this.props.navigation.state.params.dayChosen)}
-            <Header
-            placement="left"
-            leftComponent={{ icon: 'menu', color: '#fff' }}
-            centerComponent={{ text: this.props.navigation.state.params.dayChosen, style: { color: '#fff' } }}
-            rightComponent={{ icon: 'home', color: '#fff' }}
-            />
-            <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
+        <View style={{backgroundColor:'#79bd9a',flex:1}} >
+          {console.log(this.state.currDate)}
+            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
                 buttons={buttons}
-                containerStyle={{height: 100}}
+                containerStyle={{height: '10%'}}
             />
 			<ScrollView style={{height:'40%'}}>
 				{
 					this.state.activeList.map( (name) => (
 					<ListItem
-                        title={name}
+							key={name}
+							title={name}
+							topDivider={true}
+							bottomDivider={true}
+							// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+							rightIcon={<Icon 
+								name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+								size = {28}
+								color = 'red'
+								onPress={this.handleDeleteMeal.bind(this,name)}
+							/>}
                     />
 					))
 				}
 			</ScrollView>
 			<Button title='Add a meal'
-				onPress={() => this.props.navigation.navigate('DayAddMeal', dayChosen, currIndex)}
+				onPress={() => this.props.navigation.navigate('DayAddMeal', {dayChosen:this.state.currDate, currIndex:currIndex})}
             />
         
         </View>
       );
-    }
+		}
+		handleDeleteMeal(mealName){
+			console.log(mealName);
+			return;
+		}
 
   }
   export default viewDayScreen;

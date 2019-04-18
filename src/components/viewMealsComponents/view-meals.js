@@ -2,15 +2,11 @@ import React from 'react';
 import { View, ScrollView  } from 'react-native';
 import { Header,ListItem,Divider, ButtonGroup } from 'react-native-elements';
 import recipeData from '../../data/recipe';
-import MealManager from '../editMealsComponents/meal-manager';
 import { FileSystem } from 'expo';
 
-class viewDayAddMeal extends React.Component {
-
-    constructor (props){
-        super(props)
-        this.MM = null;
-        this.constructMealPlan();
+class MealScreen extends React.Component {
+    constructor(props){
+        super(props);
 
         let currentCustomMeals=[];
         this.fileUri = FileSystem.documentDirectory + 'custom.json';
@@ -34,6 +30,7 @@ class viewDayAddMeal extends React.Component {
               //Parse result to object and store in MealPlanCalendar
               currentCustomMeals = JSON.parse(result);
               this.setState({customMeals:currentCustomMeals});
+              console.log(currentCustomMeals);
             //    console.log(currentCustomMeals);
             }
             //Run async function
@@ -49,6 +46,7 @@ class viewDayAddMeal extends React.Component {
 
 
         });
+        
         this.state={
             customMeals:currentCustomMeals,
             presetMeals:recipeData,
@@ -67,32 +65,11 @@ class viewDayAddMeal extends React.Component {
         else
           this.setState({displayList:this.state.customMeals});
     }
-
-    async constructMealPlan() {
-
-		let mm = new MealManager();
-
-        await mm.init();
-        
-        this.MM = mm;
-
-	}
-	
-	/* addmealButtonPress(d,t,m) {
-		this.MM.addmeal(d,t,m);
-		this.props.navigation.navigate('DayView', dayChosen );
-	} */
-
-    // essentially copy pasta of preset.js
-    // handle is slightly different
     render() {
-        console.log(this.state.props);
         const buttons = ['Preset', 'Custom'];
         const {selectedIndex} = this.state;
-        let currIndex = selectedIndex;
-        let dayChosen=this.props.navigation.state.params.dayChosen;
+        console.log(this.state.displayList);
       return (
-
         <View style={{flex:1}}>
             <ButtonGroup
                 onPress={this.updateIndex}
@@ -109,7 +86,7 @@ class viewDayAddMeal extends React.Component {
                         title={l.name}
                         topDivider={true}
                         bottomDivider={true}
-                        onPress={this.handleAddMeal.bind(this,this.props.navigation.state.params.dayChosen,this.props.navigation.state.params.currIndex ,l.name)}
+                        // onPress={this.handleMealSend.bind(this,l.name)}
                     />
                     ))
                 }
@@ -117,10 +94,16 @@ class viewDayAddMeal extends React.Component {
         </View>
       );
     }
-    handleAddMeal(dayChosen,currIndex,name){
-        this.MM.addmeal(dayChosen,currIndex,name);
-        this.props.navigation.navigate('Calendar');
+
+    handleMealSend(name){
+        const { navigate } = this.props.navigation;
+        // Send name of the meal to the Ingredients Screen Component (ingredients.js)
+        navigate('Ingredients', { mealName: name })
+
+        return;
     }
+    
+
 
   }
-  export default viewDayAddMeal;
+  export default MealScreen;
