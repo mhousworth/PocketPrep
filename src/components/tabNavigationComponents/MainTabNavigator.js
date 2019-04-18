@@ -7,9 +7,13 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from './TabBarIcon';
 
+import Icon from 'react-native-vector-icons';
+
 import CalendarScreen from '../calendarComponents/calendar';
 
 import ShoppingListScreen from '../shoppingListComponents/shopping';
+
+import MealListScreen from '../viewMealsComponents/preset'
 
 
 const CalendarStack = createStackNavigator({
@@ -55,7 +59,7 @@ MealStack.navigationOptions = {
     tabBarLabel: 'Meals',
     tabBarIcon: ({focused}) => (
         <TabBarIcon focused = {focused}
-        name={Platform.OS === 'ios' ? 'ios-'}
+        name={Platform.OS === 'ios' ? 'ios-list' : 'md-list'} />
     )
 }
 
