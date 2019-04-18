@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, ScrollView  } from 'react-native';
 import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup } from 'react-native-elements';
-import MealManager from '../editMealsComponents/meal-manager'
-
+import MealManager from '../editMealsComponents/meal-manager';
+import { Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class viewDayScreen extends React.Component {
 	
@@ -64,7 +65,6 @@ class viewDayScreen extends React.Component {
 			this.setState({activeList:this.dArray});
     }
 
-
   render() {
     const buttons = ['Breakfast', 'Lunch', 'Dinner'];
     const { selectedIndex } = this.state;
@@ -91,18 +91,32 @@ class viewDayScreen extends React.Component {
 				{
 					this.state.activeList.map( (name) => (
 					<ListItem
-                        title={name}
+							key={name}
+							title={name}
+							topDivider={true}
+							bottomDivider={true}
+							// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+							rightIcon={<Icon 
+								name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+								size = {28}
+								color = 'red'
+								onPress={this.handleDeleteMeal.bind(this,name)}
+							/>}
                     />
 					))
 				}
 			</ScrollView>
 			<Button title='Add a meal'
-				onPress={() => this.props.navigation.navigate('DayAddMeal', this.state.currDate, currIndex)}
+				onPress={() => this.props.navigation.navigate('DayAddMeal', {dayChosen:this.state.currDate, currIndex:currIndex})}
             />
         
         </View>
       );
-    }
+		}
+		handleDeleteMeal(mealName){
+			console.log(mealName);
+			return;
+		}
 
   }
   export default viewDayScreen;
