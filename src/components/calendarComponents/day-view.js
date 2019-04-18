@@ -69,6 +69,7 @@ class viewDayScreen extends React.Component {
     const buttons = ['Breakfast', 'Lunch', 'Dinner'];
     const { selectedIndex } = this.state;
 		let dayChosen=new Date(this.state.currDate);
+		dayChosen.setDate(dayChosen.getDate()+1);
 		dayChosen=dayChosen.toDateString().split(' ').slice(1).join(' ');
     
     currIndex = selectedIndex;
