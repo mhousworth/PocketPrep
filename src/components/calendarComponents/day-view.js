@@ -8,16 +8,22 @@ class viewDayScreen extends React.Component {
 	
 	constructor (props) {
         super(props)
-        this.state = {
-        selectedIndex: 2
-        }
-        this.updateIndex = this.updateIndex.bind(this);
-		
+        
 		this.MM = null;
 		
-		this.plan = '';
+		this.bArray = [];
+		this.lArray = [];
+		this.dArray = [];
 		
 		this.constructMealPlan();
+		let currDate = this.props.navigation.state.params.dayChosen;
+		this.state = {
+        selectedIndex: 0,
+				activeList: this.bArray,
+				currDate:currDate
+		}
+
+		this.updateIndex = this.updateIndex.bind(this);
 		
 		this.isLoading = true;
     }
@@ -32,67 +38,66 @@ class viewDayScreen extends React.Component {
 		
 		//console.log('mealplancalendar object: ' + JSON.stringify(mm));
 		
-		let mp = mm.getMealPlan(this.props.navigation.state.params.dayChosen);
+		let mp = mm.getMealPlan(this.state.currDate);
 		
 		console.log('mealplan object: ' + JSON.stringify(mp));
 		
-		if(mp == undefined)
-			return;
-		
-		let B = mp.Breakfast;
-		let L = mp.Lunch;
-		let D = mp.Dinner;
-		
 		let Bstr = '', Lstr = '', Dstr = '';
 		
-		if(B.length > 0)
-			B.forEach(function(element) { Bstr += (element + '\n'); });
-		if(L.length > 0)
-			L.forEach(function(element) { Lstr += (element + '\n'); });
-		if(D.length > 0)
-			D.forEach(function(element) { Dstr += (element + '\n'); });
+		if(mp != undefined) {
+			
+			this.bArray = mp.Breakfast;
+			this.lArray = mp.Lunch;
+			this.dArray = mp.Dinner;	
+		}
 		
-		this.plan = 'Breakfast: ' + Bstr + '\nLunch: ' + Lstr + '\nDinner: ' + Dstr;
-		
-		this.setState({isLoading : false});
+		this.setState({isLoading : false,activeList:this.bArray});
 	}
     
     updateIndex (selectedIndex) {
-        this.setState({selectedIndex})
+        this.setState({selectedIndex});
+		if(selectedIndex == 0)
+			this.setState({activeList:this.bArray});
+		if(selectedIndex == 1)
+			this.setState({activeList:this.lArray});
+		if(selectedIndex == 2)
+			this.setState({activeList:this.dArray});
     }
 
 
   render() {
-    const buttons = ['Breakfast', 'Lunch', 'Dinner']
-    const { selectedIndex } = this.state
-
-    dayChosen = this.props.navigation.state.params.dayChosen
-
-    currIndex = selectedIndex
+    const buttons = ['Breakfast', 'Lunch', 'Dinner'];
+    const { selectedIndex } = this.state;
+		let dayChosen=new Date(this.state.currDate);
+		dayChosen=dayChosen.toDateString().split(' ').slice(1).join(' ');
+    
+    currIndex = selectedIndex;
 	
-	if(this.state.isLoading){
-		return (<View></View>) ;
-	}
+		if(this.state.isLoading){
+			return (<View></View>) ;
+		}
 	
       return (
-        <View>
-          {console.log(this.props.navigation.state.params.dayChosen)}
-            <Header
-            placement="left"
-            leftComponent={{ icon: 'menu', color: '#fff' }}
-            centerComponent={{ text: this.props.navigation.state.params.dayChosen, style: { color: '#fff' } }}
-            rightComponent={{ icon: 'home', color: '#fff' }}
-            />
-            <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
-			<Text>{this.plan}</Text>
+        <View style={{backgroundColor:'#79bd9a',flex:1}} >
+          {console.log(this.state.currDate)}
+            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
                 buttons={buttons}
-                containerStyle={{height: 100}}
+                containerStyle={{height: '10%'}}
             />
+			<ScrollView style={{height:'40%'}}>
+				{
+					this.state.activeList.map( (name) => (
+					<ListItem
+                        title={name}
+                    />
+					))
+				}
+			</ScrollView>
 			<Button title='Add a meal'
-				onPress={() => this.props.navigation.navigate('DayAddMeal', dayChosen, currIndex)}
+				onPress={() => this.props.navigation.navigate('DayAddMeal', this.state.currDate, currIndex)}
             />
         
         </View>
