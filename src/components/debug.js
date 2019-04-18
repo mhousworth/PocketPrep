@@ -3,26 +3,19 @@ import { Button, View, Text } from 'react-native';
 import { FileSystem } from 'expo';
 import MealManager from "./editMealsComponents/meal-manager";
 
-let mm = new MealManager();
-mm.init();
+
 
 class DebugScreen extends React.Component {
-    constructor(props){
+	constructor(props){
       super(props);
       this.state={
         mm:new MealManager()
       }
-      this.constructDebugger()
-      
-      
-    }
-    async constructDebugger() {
 
-      let debug = new FileDebugger();
-      await debug.init();
-      this.setState({debug:debug});
-  
+      this.state.mm.init();
+      
     }
+
     render() {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -33,11 +26,11 @@ class DebugScreen extends React.Component {
 		/>
 		<Button
 			title="Remove "
-			onPress={() => mm.removeMeal("2019-05-11","B", "Farmer's Breakfast") }
+			onPress={() => this.state.mm.removeMeal("2019-04-19", "D", "Portobello Mushroom Lasagna") }
 		/>
 		<Button
 			title="Print File to Console"
-			onPress={() => mm.printFile() }
+			onPress={() => this.state.mm.printFile() }
 		/>
 		</View>
       );
