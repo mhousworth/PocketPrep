@@ -10,7 +10,7 @@ import CalendarScreen from '../calendarComponents/calendar';
 
 import ShoppingListScreen from '../shoppingListComponents/shopping';
 
-import MealListScreen from '../viewMealsComponents/preset'
+import MealListScreen from '../viewMealsComponents/view-meals'
 
 
 const CalendarStack = createSwitchNavigator({

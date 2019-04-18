@@ -50,7 +50,7 @@ class CustomScreen extends React.Component {
         
 
     }
-
+    
 
 
 
@@ -68,11 +68,18 @@ class CustomScreen extends React.Component {
         
             <ScrollView >
                 {
-                    this.state.customMeals.map((l, i) => (
+                    this.state.customMeals.map((l) => (
                     <ListItem
-                        key={i}
+                        key={l.name}
                         title={l.name}
-                        onPress={this.handleMealSend.bind(this,l.name)}
+                        topDivider={true}
+                        bottomDivider={true}
+                        // Need Icon to be touchable/button, to display overlay message to confirm deleting meal
+                        rightIcon={<Icon 
+                          name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+                          size = {28}
+                          color = 'red'
+                        />}
                     />
                     ))
                 }

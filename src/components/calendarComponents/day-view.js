@@ -95,11 +95,11 @@ class viewDayScreen extends React.Component {
 						topDivider={true}
 						bottomDivider={true}
 						// Need Icon to be touchable/button, to display overlay message to confirm deleting meal
-						rightIcon=<Icon 
+						rightIcon={<Icon 
 							name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
 							size = {28}
 							color = 'red'
-						/>
+						/>}
                     />
 					))
 				}
