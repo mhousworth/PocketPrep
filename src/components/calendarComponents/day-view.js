@@ -79,8 +79,7 @@ class viewDayScreen extends React.Component {
 		}
 	
       return (
-        <View style={{backgroundColor:'#79bd9a',flex:1}} >
-          {console.log(this.state.currDate)}
+        <View style={{backgroundColor:'#d0d0d0',flex:1}} >
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
