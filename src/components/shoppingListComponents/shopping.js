@@ -36,9 +36,9 @@ class ShoppingListScreen extends React.Component {
         
             <ScrollView >
                 {
-                    this.state.ingredients.map((item) => (
+                    this.state.ingredients.map((item,i) => (
                       <CheckBox
-                      key={item["index"]}
+                      key={item["index"]+i.toString()}
                       title={item["ingredient"]}
                       checked={item["isChecked"]}
                       // subtitle={item["mealName"]}

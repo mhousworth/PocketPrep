@@ -8,7 +8,7 @@ import MealManager from '../editMealsComponents/meal-manager';
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().format(_format-1)
+const _today = moment().add(-2,'days').format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {

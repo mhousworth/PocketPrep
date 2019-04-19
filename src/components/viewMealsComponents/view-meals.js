@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView  } from 'react-native';
-import { Header,ListItem,Divider, ButtonGroup } from 'react-native-elements';
+import { Header,ListItem,Divider, ButtonGroup, Button } from 'react-native-elements';
 import recipeData from '../../data/recipe';
 import { FileSystem } from 'expo';
 
@@ -59,6 +59,7 @@ class MealScreen extends React.Component {
 
     }
     updateIndex (selectedIndex) {
+        console.log(this.state.customMeals);
         this.setState({selectedIndex});
         if(selectedIndex == 0)
           this.setState({displayList:this.state.presetMeals});
@@ -68,7 +69,7 @@ class MealScreen extends React.Component {
     render() {
         const buttons = ['Preset', 'Custom'];
         const {selectedIndex} = this.state;
-        console.log(this.state.displayList);
+
       return (
         <View style={{flex:1}}>
             <ButtonGroup
@@ -80,9 +81,9 @@ class MealScreen extends React.Component {
         
             <ScrollView style={{height:'85%'}} >
                 {
-                    this.state.displayList.map((l) => (
+                    this.state.displayList.map((l,i) => (
                     <ListItem
-                        key={l.name}
+                        key={i}
                         title={l.name}
                         topDivider={true}
                         bottomDivider={true}
@@ -91,10 +92,23 @@ class MealScreen extends React.Component {
                     ))
                 }
             </ScrollView>
+            {this.handleViewAddButton()}
         </View>
       );
     }
-
+    handleViewAddButton(){
+        if(this.state.selectedIndex == 1){
+            return(
+                <Button 
+                    title="Add a new Meal"
+                    onPress={()=>this.props.navigation.navigate('AddRecipe')}
+                />
+            );
+        }
+        else{
+            return;
+        }
+    }
     handleMealSend(name){
         const { navigate } = this.props.navigation;
         // Send name of the meal to the Ingredients Screen Component (ingredients.js)
