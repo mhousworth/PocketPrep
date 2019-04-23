@@ -82,20 +82,13 @@ class viewDayScreen extends React.Component {
 
         <View style={{backgroundColor:'#d0d0d0',flex:1}} >
 
-            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
+            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding: Platform.OS === 'ios' ? '5% 0 5% 5%' : '5%'}}>{dayChosen}</Text>
 			<Overlay 
 				isVisible={this.state.overlayVisible}
 				onBackdropPress={ this.hideOverlay.bind(this) }
 			>
 				<Text>'Hello from Overlay!'</Text>
 			</Overlay>
-            <Header
-            placement="left"
-            leftComponent={{ icon: 'menu', color: '#fff' }}
-            centerComponent={{ text: this.props.navigation.state.params.dayChosen, style: { color: '#fff' } }}
-            rightComponent={{ icon: 'home', color: '#fff' }}
-            />
-            <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
