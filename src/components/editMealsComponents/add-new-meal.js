@@ -1,8 +1,10 @@
 import React from 'react';
-import { View  } from 'react-native';
+import { View , Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Text,Input,Button, Divider,List,ListItem } from 'react-native-elements';
+import { Text,Input, Divider,List,ListItem } from 'react-native-elements';
 import { FileSystem } from 'expo';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { StackActions,NavigationActions} from 'react-navigation'
 
 
 class AddScreen extends React.Component {
@@ -57,8 +59,8 @@ class AddScreen extends React.Component {
     }
     render() {
       return (
-        <View>
-            <Text h3>New Recipe</Text>
+        <View style={{flex:1,backgroundColor:'#d0d0d0'}}>
+            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF'}}>Create a Meal</Text>
             <Divider/>
             <View>
                 <Input placeholder="Type Here"
@@ -73,7 +75,7 @@ class AddScreen extends React.Component {
                 <View style={{flexDirection: 'row'}}>
                     <View style={{width:'50%'}}>
                         <Input placeholder="Type Here"
-                                label="Measurement Type"
+                                label="Measurement"
                                 onChangeText={(text) => this.setState({ingType:text})}
                                 value={this.state.ingType}/>
                     </View>
@@ -86,12 +88,19 @@ class AddScreen extends React.Component {
                   
                 </View>     
             </View>
-            <ScrollView style={{height:'25%'}}>
+            <ScrollView style={{height:'25%',
+                                marginTop:'5%',
+                                borderRadius: 4,
+                                borderWidth: 0.5,
+                                borderColor: '#0b486b'}}>
               {
-                this.state.ingredients.map((item)=>{
+                this.state.ingredients.map((item,i)=>{
                   return(
                     <ListItem
+                      key={i}
                       title={item.name}
+                      topDivider={true}
+							        bottomDivider={true}
                     />
 
                   );
@@ -101,9 +110,25 @@ class AddScreen extends React.Component {
             
 
             
-
-            <Button title="Add New" onPress={this.handleAddIngredient.bind(this)}></Button>
-            <Button title={"Submit "} onPress={this.handleSubmitsIngredient.bind(this)}></Button>
+            <View style={{flexDirection: 'row',width:'60%',marginHorizontal:'20%'}}>
+                <View style={{width:'50%'}}>
+                    <Icon 
+                        name={Platform.OS === 'ios' ? "ios-done-all":"md-done-all"} 
+                        color="#0b486b"
+                        size = {100}
+                        onPress={this.handleSubmitsIngredient.bind(this)}>
+                    </Icon>
+                </View>
+                <View style={{width:'50%',alignItems:'flex-end'}}>
+                    <Icon 
+                        name={Platform.OS === 'ios' ? "ios-add":"md-add"} 
+                        color="#0b486b"
+                        size = {100}
+                        onPress={this.handleAddIngredient.bind(this)}>
+                    </Icon>
+                </View>
+                
+            </View>
         </View>
       );
     }
@@ -155,7 +180,12 @@ class AddScreen extends React.Component {
           //     }
           // );
           
-          this.props.navigation.navigate('MealView');
+          // this.props.navigation.navigate('MealView');
+          const resetAction = StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: 'Main' })],
+          });
+          this.props.navigation.dispatch(resetAction);
       
     return;
   }
