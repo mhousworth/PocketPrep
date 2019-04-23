@@ -25,6 +25,7 @@ class viewDayScreen extends React.Component {
 			overlayVisible: false
         }
         this.updateIndex = this.updateIndex.bind(this);
+		this.overlayBP = this.overlayBP.bind(this);
 		
 		this.isLoading = true;
     }
@@ -52,7 +53,7 @@ class viewDayScreen extends React.Component {
 			this.dArray = mp.Dinner;	
 		}
 		
-		this.setState({isLoading : false,activeList:this.bArray});
+		this.setState({isLoading : false ,activeList:this.bArray});
 	}
     
     updateIndex (selectedIndex) {
@@ -67,6 +68,7 @@ class viewDayScreen extends React.Component {
 
   render() {
     const buttons = ['Breakfast', 'Lunch', 'Dinner'];
+	const overlayButtons = ['Yes', 'No'];
     const { selectedIndex } = this.state;
 		let dayChosen=new Date(this.state.currDate);
 		dayChosen=dayChosen.toDateString().split(' ').slice(1).join(' ');
@@ -82,20 +84,17 @@ class viewDayScreen extends React.Component {
         <View style={{backgroundColor:'#79bd9a',flex:1}} >
           {console.log(this.state.currDate)}
 		  
-            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
+            <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF'}}>{dayChosen}</Text>
 			<Overlay 
 				isVisible={this.state.overlayVisible}
 				onBackdropPress={ this.hideOverlay.bind(this) }
 			>
-				<Text>'Hello from Overlay!'</Text>
+				<Text>Delete</Text>
+				<ButtonGroup
+					onPress={this.overlayBP}
+					buttons={overlayButtons}
+				/>
 			</Overlay>
-            <Header
-            placement="left"
-            leftComponent={{ icon: 'menu', color: '#fff' }}
-            centerComponent={{ text: this.props.navigation.state.params.dayChosen, style: { color: '#fff' } }}
-            rightComponent={{ icon: 'home', color: '#fff' }}
-            />
-            <Text h1>{this.props.navigation.state.params.dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
@@ -137,5 +136,11 @@ class viewDayScreen extends React.Component {
 		this.setState({overlayVisible:false});
 	}
 
+	overlayBP(selectedIndex){
+		if(selectedIndex == 0)
+			console.log('Yes');
+		if(selectedIndex == 1)
+			console.log('No');
+	}
   }
   export default viewDayScreen;
