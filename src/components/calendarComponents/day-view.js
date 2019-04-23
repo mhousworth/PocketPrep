@@ -69,6 +69,7 @@ class viewDayScreen extends React.Component {
     const buttons = ['Breakfast', 'Lunch', 'Dinner'];
     const { selectedIndex } = this.state;
 		let dayChosen=new Date(this.state.currDate);
+		dayChosen.setDate(dayChosen.getDate()+1);
 		dayChosen=dayChosen.toDateString().split(' ').slice(1).join(' ');
     
     currIndex = selectedIndex;
@@ -78,8 +79,7 @@ class viewDayScreen extends React.Component {
 		}
 	
       return (
-        <View style={{backgroundColor:'#79bd9a',flex:1}} >
-          {console.log(this.state.currDate)}
+        <View style={{backgroundColor:'#d0d0d0',flex:1}} >
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF',padding:'5% 0 5% 5%'}}>{dayChosen}</Text>
             <ButtonGroup
                 onPress={this.updateIndex}

@@ -13,7 +13,9 @@ import viewDayAddMeal from '../calendarComponents/day-add-meal';
 
 import MainTabNavigator from './MainTabNavigator';
 
-import MealListScreen from '../viewMealsComponents/view-meals'
+import MealListScreen from '../viewMealsComponents/view-meals';
+
+import ShoppingListScreen from '../shoppingListComponents/shopping';
 
 export default createAppContainer(createStackNavigator({
   // You could add another route here for authentication.
@@ -25,4 +27,5 @@ export default createAppContainer(createStackNavigator({
   MealView: MealListScreen,
   DayView: viewDayScreen,
   DayAddMeal: viewDayAddMeal,
+  Shopping: ShoppingListScreen
 }));
