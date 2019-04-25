@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup, Overlay } from 'react-native-elements';
+import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup, Overlay, } from 'react-native-elements';
 import MealManager from '../editMealsComponents/meal-manager';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+
 
 class viewDayScreen extends React.Component {
 	
@@ -22,10 +24,12 @@ class viewDayScreen extends React.Component {
 			selectedIndex: 0,
 			activeList: this.bArray,
 			currDate:currDate,
-			overlayVisible: false
+			overlayVisible: false,
+			removeText: null
         }
         this.updateIndex = this.updateIndex.bind(this);
 		this.overlayBP = this.overlayBP.bind(this);
+		this.overlayItem = null;
 		
 		this.isLoading = true;
     }
@@ -55,6 +59,20 @@ class viewDayScreen extends React.Component {
 		
 		this.setState({isLoading : false ,activeList:this.bArray});
 	}
+	
+	updateMealPlan() {
+		
+		let mp = this.MM.getMealPlan(this.state.currDate);
+		
+		let Bstr = '', Lstr = '', Dstr = '';
+		
+		if(mp != undefined) {
+			
+			this.bArray = mp.Breakfast;
+			this.lArray = mp.Lunch;
+			this.dArray = mp.Dinner;	
+		}	
+	}
     
     updateIndex (selectedIndex) {
         this.setState({selectedIndex});
@@ -75,25 +93,31 @@ class viewDayScreen extends React.Component {
     
     currIndex = selectedIndex;
 	
+	
 		if(this.state.isLoading){
 			return (<View></View>) ;
 		}
 	
+	//<></> Prevents comments from working it seems...
+	//Empty angle brackets in overlay prevents warning of multiple Components being passed to Overlay
+	
       return (
 	  
         <View style={{backgroundColor:'#79bd9a',flex:1}} >
-          {console.log(this.state.currDate)}
 		  
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF'}}>{dayChosen}</Text>
 			<Overlay 
 				isVisible={this.state.overlayVisible}
 				onBackdropPress={ this.hideOverlay.bind(this) }
 			>
-				<Text>Delete</Text>
-				<ButtonGroup
-					onPress={this.overlayBP}
-					buttons={overlayButtons}
-				/>
+				<>
+					<Text>Delete {this.overlayItem}?</Text>
+					<ButtonGroup
+						onPress={this.overlayBP}
+						buttons={overlayButtons}
+					/>
+					<Text>{this.state.removeText}</Text>
+				</>
 			</Overlay>
             <ButtonGroup
                 onPress={this.updateIndex}
@@ -109,13 +133,14 @@ class viewDayScreen extends React.Component {
                         title={name}
 						topDivider={true}
 						bottomDivider={true}
-						// TODO: Need Icon to be touchable/button, to display overlay message to confirm deleting meal
-						rightIcon=<Icon 
+						rightIcon={(
+						<Icon 
 							name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
 							size = {28}
 							color = 'red'
-							onPress = { this.displayOverlay.bind(this) }
+							onPress = { this.displayOverlay.bind(this, name) }
 						/>
+						)}
                     />
 					))
 				}
@@ -128,19 +153,30 @@ class viewDayScreen extends React.Component {
       );
     }
 	
-	displayOverlay(){
+	displayOverlay(name){
+		this.overlayItem = name;
 		this.setState({overlayVisible:true});
 	}
 	
 	hideOverlay(){
-		this.setState({overlayVisible:false});
+		this.overlayItem = null;
+		this.setState({overlayVisible:false, removeText:null});
 	}
 
-	overlayBP(selectedIndex){
-		if(selectedIndex == 0)
-			console.log('Yes');
+	async overlayBP(selectedIndex){
+		if(selectedIndex == 0){
+			//set state for state saying its being removed
+			this.setState({removeText:'Removing...'});
+			//await removal
+			await this.MM.removeMeal(this.state.currDate, this.state.selectedIndex, this.overlayItem);
+			//set state for meal plan or something similar
+			this.updateMealPlan();
+			//hide overlay
+			this.hideOverlay();
+		}
 		if(selectedIndex == 1)
-			console.log('No');
+			this.hideOverlay();
+		
 	}
   }
   export default viewDayScreen;
