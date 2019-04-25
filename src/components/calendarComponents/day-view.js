@@ -101,6 +101,7 @@ class viewDayScreen extends React.Component {
 	
 	//<></> Prevents comments from working it seems...
 	//Empty angle brackets in overlay prevents warning of multiple Components being passed to Overlay
+	//TODO: Overlay remove onBackdropPress and disable buttons when yes is pressed, to prevent additional button presses during removal
 	
       return (
 
@@ -110,12 +111,14 @@ class viewDayScreen extends React.Component {
 			<Overlay 
 				isVisible={this.state.overlayVisible}
 				onBackdropPress={ this.hideOverlay.bind(this) }
+				height={'auto'}
 			>
 				<>
-					<Text>Delete {this.overlayItem}?</Text>
-					<ButtonGroup
+					<Text>Delete "{this.overlayItem}"?</Text>
+					<ButtonGroup 
 						onPress={this.overlayBP}
 						buttons={overlayButtons}
+						containerStyle={{top:16}}
 					/>
 					<Text>{this.state.removeText}</Text>
 				</>
