@@ -5,8 +5,22 @@ import recipeDb from "../../data/recipe";
 import { FileSystem } from 'expo';
 
 class ShoppingListScreen extends React.Component {
+  
   constructor(props){
     super(props); 
+    // Ingredients holds all ingredients of selected meals
+    this.state={
+      ingredients:[]
+    }
+
+    // If mealNames is empty, it will generate an empty list
+    // Only occurs when accessing through home menu
+    try{
+      this.mealNames=this.props.navigation.state.params.compileNames;
+    }
+    catch(e){
+      console.log('Error Message',e);
+    }
 
     this.fileUri = FileSystem.documentDirectory + 'custom.json';
     //FileSystem retrieves file information (exists), must await before accessing file
@@ -21,13 +35,15 @@ class ShoppingListScreen extends React.Component {
           try {
             //Wait for FileSystem read to return a result string
             result = await FileSystem.readAsStringAsync(this.fileUri);
-            console.log('now');
           
           } catch(e) {
           console.log(e);
           }
           //Parse result to object and store in Custom Meals List
-          this.customMeals=JSON.parse(result);
+
+          let dataAggregation = [...recipeDb,...JSON.parse(result)];
+          // console.log(this.createShoppingList(this.mealNames,dataAggregation));
+          this.setState({ingredients:this.createShoppingList(this.mealNames,dataAggregation)});
         }
         //Run async function
         fileread();
@@ -45,28 +61,15 @@ class ShoppingListScreen extends React.Component {
 
     
   
-    // Ingredients holds all ingredients of selected meals
-    this.state={
-      ingredients:[]
-    }
-
-    // If mealNames is empty, it will generate an empty list
-    // Only occurs when accessing through home menu
-    try{
-      this.mealNames=this.props.navigation.state.params.compileNames;
-    }
-    catch(e){
-      console.log('Error Message',e);
-    }
+    
     
 
-    console.log(this.mealNames,this.customMeals);
 
   }
 
+
   render() {
     // this.setState({ingredients:this.createShoppingList(this.state.mealNames,(recipeDb.concat(this.state.customMeals)))});
-    console.log(this.mealNames,this.customMeals);
       return (
         <View style={{flex: 1}}>
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF'}}>Shopping List</Text>
