@@ -16,6 +16,7 @@ class ShoppingListScreen extends React.Component {
     // If mealNames is empty, it will generate an empty list
     // Only occurs when accessing through home menu
     try{
+      console.log(this.props);
       this.mealNames=this.props.navigation.state.params.compileNames;
     }
     catch(e){
@@ -44,6 +45,7 @@ class ShoppingListScreen extends React.Component {
           let dataAggregation = [...recipeDb,...JSON.parse(result)];
           // console.log(this.createShoppingList(this.mealNames,dataAggregation));
           this.setState({ingredients:this.createShoppingList(this.mealNames,dataAggregation)});
+          
         }
         //Run async function
         fileread();
@@ -64,11 +66,23 @@ class ShoppingListScreen extends React.Component {
     
     
 
-
+    console.log('constructor call');
   }
 
-
   render() {
+    console.log('render call');
+    if(this.props.navigation.state.params.shouldReset){
+      console.log(this.state.ingredients);
+      this.state.ingredients.map((item)=>{
+          item['isChecked']=false;
+
+      });
+      this.props.navigation.state.params.shouldReset=false;
+      this.setState({ingredients:this.state.ingredients});
+
+
+    }
+    
     // this.setState({ingredients:this.createShoppingList(this.state.mealNames,(recipeDb.concat(this.state.customMeals)))});
       return (
         <View style={{flex: 1}}>
