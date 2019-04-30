@@ -168,9 +168,9 @@ class MealScreen extends React.Component {
         //set state for state saying its being removed
         this.setState({removeText:'Removing...'});
         //await removal
-        await this.MM.removeMeal(this.state.currDate, this.state.selectedIndex, this.overlayItem);
-        //set state for meal plan or something similar
-        this.updateMealPlan();
+
+        this.deleteMeal(this.overlayItem);
+
         //hide overlay
         this.hideOverlay();
       }
@@ -179,6 +179,18 @@ class MealScreen extends React.Component {
       
     }
 
+    deleteMeal(name) {
+      currentCustomMeals = this.state.customMeals;
+      let index = 0;
+      for (i = 0; i < currentCustomMeals.length; i++) {
+        if (currentCustomMeals[i].name == name) {
+          index = i;
+        }
+      }
+      currentCustomMeals.splice(index, 1);
+      FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify(currentCustomMeals));
+      this.setState({customMeals:currentCustomMeals});
+    }
 
   }
   export default MealScreen;
