@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView  } from 'react-native';
 import { Header,ListItem,Divider, ButtonGroup } from 'react-native-elements';
 import recipeData from '../../data/recipe';
-import MealManager from '../editMealsComponents/meal-manager';
+import MealManager from '../fileManager/meal-manager';
 import { FileSystem } from 'expo';
 
 class viewDayAddMeal extends React.Component {
