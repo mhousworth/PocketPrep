@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, ScrollView  } from 'react-native';
-import { Header,ListItem,Divider, ButtonGroup, Button } from 'react-native-elements';
+import { Header,ListItem,Divider, ButtonGroup, Button, Overlay,Text } from 'react-native-elements';
 import recipeData from '../../data/recipe';
 import { FileSystem } from 'expo';
+import { Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 class MealScreen extends React.Component {
     constructor(props){
@@ -106,7 +109,7 @@ class MealScreen extends React.Component {
                         title={l.name}
                         topDivider={true}
                         bottomDivider={true}
-                        rightIcon={this.handleViewIcon()}
+                        rightIcon={this.handleViewIcon(l.name)}
                         // onPress={this.handleMealSend.bind(this,l.name)}
                     />
                     ))
@@ -125,14 +128,14 @@ class MealScreen extends React.Component {
       this.overlayItem = null;
       this.setState({overlayVisible:false, removeText:null});
     }
-    handleViewIcon(){
+    handleViewIcon(itemName){
       if(this.state.selectedIndex == 1){
           return(
             <Icon 
               name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
               size = {28}
               color = 'red'
-              onPress = { this.displayOverlay.bind(this, name) }
+              onPress = { this.displayOverlay.bind(this, itemName) }
             />
           );
       }
