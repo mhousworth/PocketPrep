@@ -99,7 +99,7 @@ class viewDayScreen extends React.Component {
 			return (<View></View>) ;
 		}
 	
-	//<></> Prevents comments from working it seems...
+	//<></> Prevents comments from working it seems, or not, it just doesn't work in return render here
 	//Empty angle brackets in overlay prevents warning of multiple Components being passed to Overlay
 	//TODO: Overlay remove onBackdropPress and disable buttons when yes is pressed, to prevent additional button presses during removal
 	
@@ -158,6 +158,7 @@ class viewDayScreen extends React.Component {
     }
 	
 	displayOverlay(name){
+		// Set name of meal to be printed in Overlay
 		this.overlayItem = name;
 		this.setState({overlayVisible:true});
 	}

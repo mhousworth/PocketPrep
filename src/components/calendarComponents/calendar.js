@@ -8,13 +8,13 @@ import MealManager from '../editMealsComponents/meal-manager';
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().add(-2,'days').format(_format)
+const _today = moment().add(0,'days').format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {
   // It is not possible to select some to current day.
   initialState = {
-      [_today]: {disabled: true}
+      [_today]: {disabled: false}
   }
   
   constructor(props) {
