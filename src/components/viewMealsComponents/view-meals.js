@@ -51,9 +51,12 @@ class MealScreen extends React.Component {
             customMeals:currentCustomMeals,
             presetMeals:recipeData,
             displayList:recipeData,
-            selectedIndex:0
+            selectedIndex:0,
+            overlayVisible: false,
+            removeText: null
         }
-
+        this.overlayBP = this.overlayBP.bind(this);
+		    this.overlayItem = null;
         this.updateIndex = this.updateIndex.bind(this);
     
 
@@ -68,6 +71,7 @@ class MealScreen extends React.Component {
     }
     render() {
         const buttons = ['Preset', 'Custom'];
+        const overlayButtons = ['Yes', 'No'];
         const {selectedIndex} = this.state;
 
       return (
@@ -78,6 +82,21 @@ class MealScreen extends React.Component {
                 buttons={buttons}
                 containerStyle={{height: '10%'}}
             />
+            <Overlay 
+                isVisible={this.state.overlayVisible}
+                onBackdropPress={ this.hideOverlay.bind(this) }
+                height={'auto'}
+              >
+                <>
+                  <Text>Delete "{this.overlayItem}"?</Text>
+                  <ButtonGroup 
+                    onPress={this.overlayBP}
+                    buttons={overlayButtons}
+                    containerStyle={{top:16}}
+                  />
+                  <Text>{this.state.removeText}</Text>
+                </>
+            </Overlay>
         
             <ScrollView style={{height:'85%'}} >
                 {
@@ -87,6 +106,7 @@ class MealScreen extends React.Component {
                         title={l.name}
                         topDivider={true}
                         bottomDivider={true}
+                        rightIcon={this.handleViewIcon()}
                         // onPress={this.handleMealSend.bind(this,l.name)}
                     />
                     ))
@@ -95,6 +115,30 @@ class MealScreen extends React.Component {
             {this.handleViewAddButton()}
         </View>
       );
+    }
+    displayOverlay(name){
+      this.overlayItem = name;
+      this.setState({overlayVisible:true});
+    }
+    
+    hideOverlay(){
+      this.overlayItem = null;
+      this.setState({overlayVisible:false, removeText:null});
+    }
+    handleViewIcon(){
+      if(this.state.selectedIndex == 1){
+          return(
+            <Icon 
+              name = {Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+              size = {28}
+              color = 'red'
+              onPress = { this.displayOverlay.bind(this, name) }
+            />
+          );
+      }
+      else{
+        return;
+      }
     }
     handleViewAddButton(){
         if(this.state.selectedIndex == 1){
@@ -116,7 +160,21 @@ class MealScreen extends React.Component {
 
         return;
     }
-    
+    async overlayBP(selectedIndex){
+      if(selectedIndex == 0){
+        //set state for state saying its being removed
+        this.setState({removeText:'Removing...'});
+        //await removal
+        await this.MM.removeMeal(this.state.currDate, this.state.selectedIndex, this.overlayItem);
+        //set state for meal plan or something similar
+        this.updateMealPlan();
+        //hide overlay
+        this.hideOverlay();
+      }
+      if(selectedIndex == 1)
+        this.hideOverlay();
+      
+    }
 
 
   }

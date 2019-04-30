@@ -15,6 +15,22 @@ class ShoppingListScreen extends React.Component {
 
     // If mealNames is empty, it will generate an empty list
     // Only occurs when accessing through home menu
+    
+    this.fileUri = FileSystem.documentDirectory + 'custom.json';
+    //FileSystem retrieves file information (exists), must await before accessing file
+    this.grabCustomList();
+    
+
+
+    
+  
+    
+    
+
+    console.log('constructor call');
+  }
+
+  grabCustomList(){
     try{
       console.log(this.props);
       this.mealNames=this.props.navigation.state.params.compileNames;
@@ -22,9 +38,6 @@ class ShoppingListScreen extends React.Component {
     catch(e){
       console.log('Error Message',e);
     }
-
-    this.fileUri = FileSystem.documentDirectory + 'custom.json';
-    //FileSystem retrieves file information (exists), must await before accessing file
     FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
 
       if ( fileInfo["exists"] == true) {
@@ -59,28 +72,23 @@ class ShoppingListScreen extends React.Component {
 
     });
 
-
-
-    
-  
-    
-    
-
-    console.log('constructor call');
   }
 
   render() {
     console.log('render call');
-    if(this.props.navigation.state.params.shouldReset){
-      console.log(this.state.ingredients);
-      this.state.ingredients.map((item)=>{
-          item['isChecked']=false;
+    try{
+      if(this.props.navigation.state.params.shouldReset){
+        this.grabCustomList();
+        this.state.ingredients.map((item)=>{
+            item['isChecked']=false;
 
-      });
-      this.props.navigation.state.params.shouldReset=false;
-      this.setState({ingredients:this.state.ingredients});
-
-
+        });
+        this.props.navigation.state.params.shouldReset=false;
+        this.setState({ingredients:this.state.ingredients});
+      }
+    }
+    catch(e){
+      console.log(e);
     }
     
     // this.setState({ingredients:this.createShoppingList(this.state.mealNames,(recipeDb.concat(this.state.customMeals)))});
