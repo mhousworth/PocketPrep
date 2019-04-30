@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Header,ListItem,Text,Input,Button, Divider, ButtonGroup, Overlay, } from 'react-native-elements';
-import MealManager from '../editMealsComponents/meal-manager';
+import MealManager from '../fileManager/meal-manager';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 

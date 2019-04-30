@@ -3,7 +3,9 @@ import moment from 'moment';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements'
 import { CalendarList } from 'react-native-calendars';
-import MealManager from '../editMealsComponents/meal-manager';
+import MealManager from '../fileManager/meal-manager';
+import { StackActions,NavigationActions} from 'react-navigation'
+
 
 
 
@@ -98,7 +100,18 @@ class CalendarScreen extends React.Component {
 
     // navigate to the shopping list
 
-    this.props.navigation.navigate('Shopping',{compileNames:mealNames});
+
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Shopping',
+      params:{
+        compileNames:mealNames,
+        shouldReset:true
+      },
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+
+    // this.props.navigation.navigate('Shopping',{compileNames:mealNames});
     return;
     
   }
