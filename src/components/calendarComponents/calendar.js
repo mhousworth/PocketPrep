@@ -26,15 +26,17 @@ class CalendarScreen extends React.Component {
       _markedDates: this.initialState
     }
     this.constructMealPlan();
-  }
+	}
 
-  async constructMealPlan() {
+	async constructMealPlan() {
 
-  let mm = new MealManager();
+		console.log("Navigated to Calendar");
+	
+		let mm = new MealManager();
 
-      await mm.init();
-      
-      this.MealManage = mm;
+		await mm.init();
+		
+		this.MealManage = mm;
 
 	}
   
@@ -51,6 +53,8 @@ class CalendarScreen extends React.Component {
   }
   
   render() {
+	this.constructMealPlan();
+	
     let date1 = moment(_today.dateString).format(_format);
     let date2 = moment().add(1, 'days').format(_format);
     return (

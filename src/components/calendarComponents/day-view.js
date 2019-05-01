@@ -57,7 +57,15 @@ class viewDayScreen extends React.Component {
 			this.dArray = mp.Dinner;	
 		}
 		
-		this.setState({isLoading : false ,activeList:this.bArray});
+		// Handles if navigated from DayAddMeal
+		let currIndex = this.props.navigation.state.params.currIndex;
+		
+		if(currIndex == 1)
+			this.setState({selectedIndex:1, isLoading : false, activeList: this.lArray });
+		else if(currIndex == 2)
+			this.setState({selectedIndex:2, isLoading : false, activeList: this.dArray });
+		else
+			this.setState({selectedIndex:0, isLoading : false, activeList: this.bArray });
 	}
 	
 	updateMealPlan() {
@@ -98,6 +106,7 @@ class viewDayScreen extends React.Component {
 		if(this.state.isLoading){
 			return (<View></View>) ;
 		}
+		
 	
 	//<></> Prevents comments from working it seems, or not, it just doesn't work in return render here
 	//Empty angle brackets in overlay prevents warning of multiple Components being passed to Overlay
