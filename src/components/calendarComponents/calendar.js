@@ -10,7 +10,7 @@ import { StackActions,NavigationActions} from 'react-navigation'
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().add(-2,'days').format(_format)
+const _today = moment().add(-1,'days').format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {

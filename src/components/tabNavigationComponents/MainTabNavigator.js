@@ -12,6 +12,8 @@ import ShoppingListScreen from '../shoppingListComponents/shopping';
 
 import MealListScreen from '../viewMealsComponents/view-meals'
 
+import SettingScreen from '../settingsComponents/setting-home'
+
 
 const CalendarStack = createSwitchNavigator({
   Calendar: CalendarScreen,
@@ -60,9 +62,24 @@ MealStack.navigationOptions = {
     )
 }
 
+const SettingStack = createSwitchNavigator({
+  Settings: SettingScreen,
+});
+
+SettingStack.navigationOptions = {
+  tabBarLabel: 'Settings',
+  tabBarIcon: ({focused}) => (
+      <FontAwesome focused = {focused}
+      name={'cogs'}
+      size={26}
+      />
+  )
+}
+
 
 export default createBottomTabNavigator({
   CalendarStack,
   ShoppingStack,
   MealStack,
+  SettingStack
 });

@@ -17,6 +17,8 @@ import MealListScreen from '../viewMealsComponents/view-meals';
 
 import ShoppingListScreen from '../shoppingListComponents/shopping';
 
+import SettingScreen from '../settingsComponents/setting-home'
+
 export default createAppContainer(createStackNavigator({
   // You could add another route here for authentication.
   // Read more at https://reactnavigation.org/docs/en/auth-flow.html
@@ -27,5 +29,6 @@ export default createAppContainer(createStackNavigator({
   MealView: MealListScreen,
   DayView: viewDayScreen,
   DayAddMeal: viewDayAddMeal,
-  Shopping: ShoppingListScreen
+  Shopping: ShoppingListScreen,
+  Settings: SettingScreen
 }));
