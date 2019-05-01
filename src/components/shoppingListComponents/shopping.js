@@ -32,7 +32,6 @@ class ShoppingListScreen extends React.Component {
 
   grabCustomList(){
     try{
-      console.log(this.props);
       this.mealNames=this.props.navigation.state.params.compileNames;
     }
     catch(e){
@@ -75,7 +74,6 @@ class ShoppingListScreen extends React.Component {
   }
 
   render() {
-    console.log('render call');
     try{
       if(this.props.navigation.state.params.shouldReset){
         this.grabCustomList();
@@ -117,8 +115,6 @@ class ShoppingListScreen extends React.Component {
     // createShoppingList -- Input: Array of meal names
     //                       Output: Array of ingredients of each meal
     createShoppingList(mealNames,database) {
-      console.log(this.mealNames,this.customMeals);
-      console.log(mealNames);
       let shoppingList = [];
       for (let mealNameIndex = 0; mealNameIndex < mealNames.length; mealNameIndex++ ) {
         for (let recipeIndex = 0; recipeIndex < database.length; recipeIndex++) {
