@@ -35,6 +35,7 @@ class CalendarScreen extends React.Component {
       await mm.init();
       
       this.MealManage = mm;
+      console.log("MM change");
 
 	}
   
@@ -80,11 +81,11 @@ class CalendarScreen extends React.Component {
       </View>
     );
   }
-  handleSend(dates){
+  async handleSend(dates){
     // Account for :
     //    - Undefined(Days with no meals set)
     //    - MealPlan({"Breakfast":[],"Lunch":[],"Dinner":[]})
-    
+    await this.constructMealPlan();
     let mealNames = [];
     // Extracts each date and collects all meal names
     // Stores an array of all meal names (string[] mealNames)
@@ -94,6 +95,7 @@ class CalendarScreen extends React.Component {
           mealNames=mealNames.concat(plan["Breakfast"],plan["Lunch"],plan["Dinner"]);
       }
     });
+    console.log("mealNames set");
 
 
     // send array of mealnames through .createShoppingList
