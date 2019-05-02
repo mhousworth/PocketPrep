@@ -10,13 +10,13 @@ import { StackActions,NavigationActions} from 'react-navigation'
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().add(-2,'days').format(_format)
+const _today = moment().add(0,'days').format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {
   // It is not possible to select some to current day.
   initialState = {
-      [_today]: {disabled: true}
+      [_today]: {disabled: false}
   }
   
   constructor(props) {
@@ -26,16 +26,17 @@ class CalendarScreen extends React.Component {
       _markedDates: this.initialState
     }
     this.constructMealPlan();
-  }
+	}
 
-  async constructMealPlan() {
+	async constructMealPlan() {
 
-  let mm = new MealManager();
+		console.log("Navigated to Calendar");
+	
+		let mm = new MealManager();
 
-      await mm.init();
-      
-      this.MealManage = mm;
-      console.log("MM change");
+		await mm.init();
+		
+		this.MealManage = mm;
 
 	}
   
@@ -52,6 +53,8 @@ class CalendarScreen extends React.Component {
   }
   
   render() {
+	this.constructMealPlan();
+	
     let date1 = moment(_today.dateString).format(_format);
     let date2 = moment().add(1, 'days').format(_format);
     return (
@@ -61,7 +64,7 @@ class CalendarScreen extends React.Component {
         }}
             
             pastScrollRange={0}
-            futureScrollRange={2}
+            futureScrollRange={1}
 
             // we use moment.js to give the minimum and maximum dates.
             minDate={_today}
