@@ -123,10 +123,13 @@ class ShoppingListScreen extends React.Component {
             // shoppingList.push({ingredient:tempname});
             for (ingredientIndex = 0; ingredientIndex < database[recipeIndex].ingredients.length; ingredientIndex++) {
               let temp = "";
-                if (database[recipeIndex].ingredients[ingredientIndex].measurement == "") {
-                  temp += database[recipeIndex].ingredients[ingredientIndex].name;
+				if (database[recipeIndex].ingredients[ingredientIndex].amount == 0 ) {
+					temp += database[recipeIndex].ingredients[ingredientIndex].name;
+				}
+                else if (database[recipeIndex].ingredients[ingredientIndex].measurement == "") {
+                  temp += database[recipeIndex].ingredients[ingredientIndex].amount + " " + database[recipeIndex].ingredients[ingredientIndex].name;
                 } else {
-                  temp += database[recipeIndex].ingredients[ingredientIndex].name + database[recipeIndex].ingredients[ingredientIndex].amount + " " + database[recipeIndex].ingredients[ingredientIndex].measurement;
+                  temp += database[recipeIndex].ingredients[ingredientIndex].amount + " " + database[recipeIndex].ingredients[ingredientIndex].measurement + " " + database[recipeIndex].ingredients[ingredientIndex].name;
                 }
                 shoppingList.push({ingredient:temp,isChecked:false,index:shoppingList.length,mealName:mealNames[mealNameIndex]});
           }

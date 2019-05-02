@@ -57,7 +57,15 @@ class viewDayScreen extends React.Component {
 			this.dArray = mp.Dinner;	
 		}
 		
-		this.setState({isLoading : false ,activeList:this.bArray});
+		// Handles if navigated from DayAddMeal
+		let currIndex = this.props.navigation.state.params.currIndex;
+		
+		if(currIndex == 1)
+			this.setState({selectedIndex:1, isLoading : false, activeList: this.lArray });
+		else if(currIndex == 2)
+			this.setState({selectedIndex:2, isLoading : false, activeList: this.dArray });
+		else
+			this.setState({selectedIndex:0, isLoading : false, activeList: this.bArray });
 	}
 	
 	updateMealPlan() {
@@ -98,8 +106,9 @@ class viewDayScreen extends React.Component {
 		if(this.state.isLoading){
 			return (<View></View>) ;
 		}
+		
 	
-	//<></> Prevents comments from working it seems...
+	//<></> Prevents comments from working it seems, or not, it just doesn't work in return render here
 	//Empty angle brackets in overlay prevents warning of multiple Components being passed to Overlay
 	//TODO: Overlay remove onBackdropPress and disable buttons when yes is pressed, to prevent additional button presses during removal
 	
@@ -158,6 +167,7 @@ class viewDayScreen extends React.Component {
     }
 	
 	displayOverlay(name){
+		// Set name of meal to be printed in Overlay
 		this.overlayItem = name;
 		this.setState({overlayVisible:true});
 	}

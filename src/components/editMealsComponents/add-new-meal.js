@@ -160,7 +160,7 @@ class AddScreen extends React.Component {
       
        return;
     }
-  handleSubmitsIngredient(){
+	handleSubmitsIngredient(){
       
 		console.log('custom meals object: ' + JSON.stringify(this.state.customMeals));
 	  
@@ -188,9 +188,7 @@ class AddScreen extends React.Component {
           this.props.navigation.dispatch(resetAction);
       
     return;
-  }
-  
-
+	}
 
 }
 export default AddScreen;

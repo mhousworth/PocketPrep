@@ -4,6 +4,7 @@ import { Header,ListItem,Divider, ButtonGroup } from 'react-native-elements';
 import recipeData from '../../data/recipe';
 import MealManager from '../fileManager/meal-manager';
 import { FileSystem } from 'expo';
+import { StackActions,NavigationActions} from 'react-navigation'
 
 class viewDayAddMeal extends React.Component {
 
@@ -117,9 +118,16 @@ class viewDayAddMeal extends React.Component {
         </View>
       );
     }
+	
     handleAddMeal(dayChosen,currIndex,name){
         this.MM.addmeal(dayChosen,currIndex,name);
-        this.props.navigation.navigate('Calendar');
+		
+		// Reset Stack, navigates to Calendar/Main, then to DayView, this preserves the back button
+        const resetAction = StackActions.reset({
+			index: 1,
+			actions: [NavigationActions.navigate({ routeName: 'Main' }), NavigationActions.navigate({ routeName: 'DayView', params:{ dayChosen:dayChosen, currIndex:currIndex } }) ],
+		});
+		this.props.navigation.dispatch(resetAction);
     }
 
   }
