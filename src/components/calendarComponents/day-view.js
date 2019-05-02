@@ -42,11 +42,9 @@ class viewDayScreen extends React.Component {
 		
 		this.MM = mm;
 		
-		//console.log('mealplancalendar object: ' + JSON.stringify(mm));
 		
 		let mp = mm.getMealPlan(this.state.currDate);
 		
-		console.log('mealplan object: ' + JSON.stringify(mp));
 		
 		let Bstr = '', Lstr = '', Dstr = '';
 		

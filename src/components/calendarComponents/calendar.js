@@ -4,7 +4,8 @@ import { View } from 'react-native';
 import { Button } from 'react-native-elements'
 import { CalendarList } from 'react-native-calendars';
 import MealManager from '../fileManager/meal-manager';
-import { StackActions,NavigationActions} from 'react-navigation'
+import { StackActions,NavigationActions} from 'react-navigation';
+import {FileSystem} from 'expo';
 
 
 
@@ -54,9 +55,6 @@ class CalendarScreen extends React.Component {
   
   render() {
 	this.constructMealPlan();
-	
-    let date1 = moment(_today.dateString).format(_format);
-    let date2 = moment().add(1, 'days').format(_format);
     return (
       <View style={{flex: 1}}>
         <CalendarList
@@ -79,12 +77,55 @@ class CalendarScreen extends React.Component {
         />
         <Button
           title= 'Compile Shopping List'
-          onPress ={this.handleSend.bind(this,[date1,date2])}
+          onPress ={this.handleSend.bind(this)}
         />
       </View>
     );
   }
-  async handleSend(dates){
+  async grabSettings(){
+    this.fileUri = FileSystem.documentDirectory + 'settings.json';
+    //FileSystem retrieves file information (exists), must await before accessing file
+    FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
+
+      if ( fileInfo["exists"] == true) {
+        
+        //FileSystem reads are asynchronous, must await before creating customMeals List
+        fileread = async () => {
+          let result = null;
+        
+          try {
+            //Wait for FileSystem read to return a result string
+            result = await FileSystem.readAsStringAsync(this.fileUri);
+          
+          } catch(e) {
+          console.log(e);
+          }
+          //Parse result to object and store in Custom Meals List
+          this.settings=JSON.parse(result); 
+          console.log(this.settings); 
+          
+          this.setState({numDays:this.settings['days']});          
+        }
+        //Run async function
+        fileread();
+        }
+        else {
+          console.log('settings file does not exist');
+
+          // Write Empty List 
+          this.settings={days:3}
+          FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify({days:3}));
+          this.setState({numDays:this.settings['days']}); 
+        }
+    });
+
+}
+  async handleSend(){
+    await this.grabSettings();
+    let dates=[moment(_today.dateString).format(_format)];
+    for(let numDay=1;numDay<this.state.numDays;numDay++){
+        dates.push(moment().add(numDay, 'days').format(_format));
+    }
     // Account for :
     //    - Undefined(Days with no meals set)
     //    - MealPlan({"Breakfast":[],"Lunch":[],"Dinner":[]})

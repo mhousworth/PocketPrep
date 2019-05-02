@@ -11,26 +11,56 @@ class SettingScreen extends React.Component {
       this.settings={};
       this.state={
           value:2,
+          isLoading:true
       }
+      
+      this.constructFileSettings();
+    }
+
+    async constructFileSettings(){
+        this.fileUri = FileSystem.documentDirectory + 'settings.json';
+        //FileSystem retrieves file information (exists), must await before accessing file
+        FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
+
+          if ( fileInfo["exists"] == true) {
+            
+            //FileSystem reads are asynchronous, must await before creating customMeals List
+            fileread = async () => {
+              let result = null;
+            
+              try {
+                //Wait for FileSystem read to return a result string
+                result = await FileSystem.readAsStringAsync(this.fileUri);
+              
+              } catch(e) {
+              console.log(e);
+              }
+              //Parse result to object and store in Custom Meals List
+              this.settings=JSON.parse(result); 
+              
+              this.setState({isLoading:false,value:this.settings['days']});          
+            }
+            //Run async function
+            fileread();
+            }
+            else {
+              console.log('custom file does not exist');
+
+              // Write Empty List 
+              this.settings={days:3}
+              FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify({days:3}));
+              this.setState({isLoading:false,value:this.settings['days']}); 
+            }
+        });
     }
 
     render() {
-
+        if(this.state.isLoading){
+            return(<View style={{flex:1,alignItems: 'center', justifyContent: 'center' }}><Text>Loading...</Text></View>)
+        }
       return (
         <View style={{ flex: 1}}>
             <Text h1>Settings</Text>
-
-                {/* {
-                    this.state.settings.map((setting,i)=>{
-                        return(
-                            <ListItem
-                                key={i}
-                                title={setting.title}
-                                onPress={setting.function}
-                            />
-                        );
-                    })
-                } */}
                 <ListItem
                     key={0}
                     title={"Configure Days"}
@@ -73,10 +103,11 @@ class SettingScreen extends React.Component {
         </View>
       );
     }
-    handleConfigureDays(numDays){
+    async handleConfigureDays(numDays){
         console.log(`Configuring to ${numDays} Days`);
-        this.settings['days']=numDays;
-        console.log(this.settings['days']);
+        await FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify({days:numDays}));
+        this.setState({value:numDays});
+        
     }
     handleDeleteMealPlan(){
         console.log("Deleting Meal Plan");
