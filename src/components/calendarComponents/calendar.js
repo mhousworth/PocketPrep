@@ -61,7 +61,7 @@ class CalendarScreen extends React.Component {
         }}
             
             pastScrollRange={0}
-            futureScrollRange={2}
+            futureScrollRange={1}
 
             // we use moment.js to give the minimum and maximum dates.
             minDate={_today}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { Header,Text,ListItem,CheckBox,Button } from 'react-native-elements';
+import { Header,Text,ListItem,Slider,CheckBox,Button } from 'react-native-elements';
 import { FileSystem } from 'expo';
 
 
@@ -8,24 +8,19 @@ import { FileSystem } from 'expo';
 class SettingScreen extends React.Component {
 	constructor(props){
       super(props);
-      
+      this.settings={};
       this.state={
-          settings:[
-              {title:"Configure Days",function:this.handleConfigureDays},
-              {title:"Delete All Meals",function:this.handleDeleteMealPlan},
-              {title:"Delete All Custom Meals",function:this.handleDeleteCustomMeals}
-          ]
+          value:2,
       }
-      
     }
 
     render() {
+
       return (
         <View style={{ flex: 1}}>
             <Text h1>Settings</Text>
-            <ScrollView style={{height:'40%'}}>
 
-                {
+                {/* {
                     this.state.settings.map((setting,i)=>{
                         return(
                             <ListItem
@@ -35,15 +30,53 @@ class SettingScreen extends React.Component {
                             />
                         );
                     })
-                }
+                } */}
+                <ListItem
+                    key={0}
+                    title={"Configure Days"}
+                    rightElement={(
+                        <Button 
+                            title="Save"
+                            onPress={this.handleConfigureDays.bind(this,this.state.value)}
+                        />
+                    )}
+                />
+                <View style={{height:'25%',alignItems: 'center', justifyContent: 'center' }}>
+                    <Slider
+                        maximumValue={7}
+                        minimumValue={1}
+                        step={1}
+                        style={{width:'60%'}}
+                        value={this.state.value}
+                        onValueChange={value => this.setState({ value })}
+                    />
+                    <Text>{this.state.value} day(s)</Text>
+                </View>
                 
-
-            </ScrollView>
+                <ListItem
+                    key={1}
+                    title={"Delete All Meals"}
+                    titleStyle={{color:'red'}}
+                    topDivider={true}
+                    onLongPress={this.handleDeleteMealPlan}
+                />
+                <ListItem
+                    key={2}
+                    title={"Delete All Custom Meals"}
+                    titleStyle={{color:'red'}}
+                    onLongPress={this.handleDeleteCustomMeals}
+                />
+                
+                
+                
+            
         </View>
       );
     }
-    handleConfigureDays(){
-        console.log("Configuring Days");
+    handleConfigureDays(numDays){
+        console.log(`Configuring to ${numDays} Days`);
+        this.settings['days']=numDays;
+        console.log(this.settings['days']);
     }
     handleDeleteMealPlan(){
         console.log("Deleting Meal Plan");
