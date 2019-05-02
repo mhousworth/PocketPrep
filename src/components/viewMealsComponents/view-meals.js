@@ -18,11 +18,11 @@ class MealScreen extends React.Component {
 
           if ( fileInfo["exists"] == true) {
             console.log('custom file exists');
-            
+ 
             //FileSystem reads are asynchronous, must await before creating MealPlanCalendar object
             fileread = async () => {
               let result = null;
-            
+
               try {
                 //Wait for FileSystem read to return a result string
                 result = await FileSystem.readAsStringAsync(this.fileUri);
@@ -42,9 +42,9 @@ class MealScreen extends React.Component {
             else {
               console.log('custom file does not exist');
               //create the file based on app's asset
-              currentCustomMeals = "[]";
-              FileSystem.writeAsStringAsync(this.fileUri, currentCustomMeals);
               currentCustomMeals = [];
+              FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify(currentCustomMeals));
+
             }
 
 
