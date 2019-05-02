@@ -5,11 +5,38 @@ import recipeDb from "../../data/recipe";
 import { FileSystem } from 'expo';
 
 class ShoppingListScreen extends React.Component {
+  
   constructor(props){
     super(props); 
+    // Ingredients holds all ingredients of selected meals
+    this.state={
+      ingredients:[]
+    }
 
+    // If mealNames is empty, it will generate an empty list
+    // Only occurs when accessing through home menu
+    
     this.fileUri = FileSystem.documentDirectory + 'custom.json';
     //FileSystem retrieves file information (exists), must await before accessing file
+    this.grabCustomList();
+    
+
+
+    
+  
+    
+    
+
+    console.log('constructor call');
+  }
+
+  grabCustomList(){
+    try{
+      this.mealNames=this.props.navigation.state.params.compileNames;
+    }
+    catch(e){
+      console.log('Error Message',e);
+    }
     FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
 
       if ( fileInfo["exists"] == true) {
@@ -21,13 +48,16 @@ class ShoppingListScreen extends React.Component {
           try {
             //Wait for FileSystem read to return a result string
             result = await FileSystem.readAsStringAsync(this.fileUri);
-            console.log('now');
           
           } catch(e) {
           console.log(e);
           }
           //Parse result to object and store in Custom Meals List
-          this.customMeals=JSON.parse(result);
+
+          let dataAggregation = [...recipeDb,...JSON.parse(result)];
+          // console.log(this.createShoppingList(this.mealNames,dataAggregation));
+          this.setState({ingredients:this.createShoppingList(this.mealNames,dataAggregation)});
+          
         }
         //Run async function
         fileread();
@@ -41,32 +71,25 @@ class ShoppingListScreen extends React.Component {
 
     });
 
-
-
-    
-  
-    // Ingredients holds all ingredients of selected meals
-    this.state={
-      ingredients:[]
-    }
-
-    // If mealNames is empty, it will generate an empty list
-    // Only occurs when accessing through home menu
-    try{
-      this.mealNames=this.props.navigation.state.params.compileNames;
-    }
-    catch(e){
-      console.log('Error Message',e);
-    }
-    
-
-    console.log(this.mealNames,this.customMeals);
-
   }
 
   render() {
+    try{
+      if(this.props.navigation.state.params.shouldReset){
+        this.grabCustomList();
+        this.state.ingredients.map((item)=>{
+            item['isChecked']=false;
+
+        });
+        this.props.navigation.state.params.shouldReset=false;
+        this.setState({ingredients:this.state.ingredients});
+      }
+    }
+    catch(e){
+      console.log(e);
+    }
+    
     // this.setState({ingredients:this.createShoppingList(this.state.mealNames,(recipeDb.concat(this.state.customMeals)))});
-    console.log(this.mealNames,this.customMeals);
       return (
         <View style={{flex: 1}}>
             <Text h1 style={{backgroundColor:'#0b486b',color:'#FFFFFF'}}>Shopping List</Text>
@@ -92,8 +115,6 @@ class ShoppingListScreen extends React.Component {
     // createShoppingList -- Input: Array of meal names
     //                       Output: Array of ingredients of each meal
     createShoppingList(mealNames,database) {
-      console.log(this.mealNames,this.customMeals);
-      console.log(mealNames);
       let shoppingList = [];
       for (let mealNameIndex = 0; mealNameIndex < mealNames.length; mealNameIndex++ ) {
         for (let recipeIndex = 0; recipeIndex < database.length; recipeIndex++) {

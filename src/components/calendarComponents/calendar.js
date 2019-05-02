@@ -3,7 +3,9 @@ import moment from 'moment';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements'
 import { CalendarList } from 'react-native-calendars';
-import MealManager from '../editMealsComponents/meal-manager';
+import MealManager from '../fileManager/meal-manager';
+import { StackActions,NavigationActions} from 'react-navigation'
+
 
 
 
@@ -33,6 +35,7 @@ class CalendarScreen extends React.Component {
       await mm.init();
       
       this.MealManage = mm;
+      console.log("MM change");
 
 	}
   
@@ -78,11 +81,11 @@ class CalendarScreen extends React.Component {
       </View>
     );
   }
-  handleSend(dates){
+  async handleSend(dates){
     // Account for :
     //    - Undefined(Days with no meals set)
     //    - MealPlan({"Breakfast":[],"Lunch":[],"Dinner":[]})
-    
+    await this.constructMealPlan();
     let mealNames = [];
     // Extracts each date and collects all meal names
     // Stores an array of all meal names (string[] mealNames)
@@ -92,13 +95,25 @@ class CalendarScreen extends React.Component {
           mealNames=mealNames.concat(plan["Breakfast"],plan["Lunch"],plan["Dinner"]);
       }
     });
+    console.log("mealNames set");
 
 
     // send array of mealnames through .createShoppingList
 
     // navigate to the shopping list
 
-    this.props.navigation.navigate('Shopping',{compileNames:mealNames});
+
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Shopping',
+      params:{
+        compileNames:mealNames,
+        shouldReset:true
+      },
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+
+    // this.props.navigation.navigate('Shopping',{compileNames:mealNames});
     return;
     
   }
