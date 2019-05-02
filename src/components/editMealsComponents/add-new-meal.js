@@ -145,7 +145,7 @@ class AddScreen extends React.Component {
         let newIngredients=this.state.ingredients;
         newIngredients.push({
           name:this.state.ingName,
-          type:this.state.ingType,
+          measurement:this.state.ingType,
           amount:this.state.ingAmount
         })
 
