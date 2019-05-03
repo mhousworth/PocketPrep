@@ -56,7 +56,7 @@ const MealStack = createSwitchNavigator({
 
 const resetMealView = StackActions.reset({
 	index: 0,
-	actions: [NavigationActions.navigate({routeName: 'Main'}), NavigationActions.setParams({params: {resetCustom: true}, key: 'MealView'})],
+	actions: [NavigationActions.navigate({routeName: 'Main'})],
 });
 
 MealStack.navigationOptions = {
@@ -70,9 +70,11 @@ MealStack.navigationOptions = {
 	
 	tabBarOnPress: ({ navigation, defaultHandler }) => {
 		if(navigation.getParam('resetCustom', false) == true){
-			//Set the resetCustom flag in MealStack to false and 
+			//Set the resetCustom flag in MealStack to false
 			navigation.setParams({resetCustom: false});
+			//Reset Stack
 			navigation.dispatch(resetMealView);
+			//navigates to Meal Tab
 			defaultHandler();
 		}
 		else
