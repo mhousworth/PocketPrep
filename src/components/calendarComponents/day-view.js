@@ -27,7 +27,7 @@ class viewDayScreen extends React.Component {
 			overlayVisible: false,
 			removeText: null
         }
-        this.updateIndex = this.updateIndex.bind(this);
+		this.updateIndex = this.updateIndex.bind(this);
 		this.overlayBP = this.overlayBP.bind(this);
 		this.overlayItem = null;
 		
@@ -92,7 +92,7 @@ class viewDayScreen extends React.Component {
 
   render() {
     const buttons = ['Breakfast', 'Lunch', 'Dinner'];
-	const overlayButtons = ['Yes', 'No'];
+		const overlayButtons = ['Yes', 'No'];
     const { selectedIndex } = this.state;
 		let dayChosen=new Date(this.state.currDate);
 		dayChosen.setDate(dayChosen.getDate()+1);

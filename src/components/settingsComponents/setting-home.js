@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { Header,Text,ListItem,Slider,CheckBox,Button } from 'react-native-elements';
+import { View } from 'react-native';
+import { ListItem,Text,Button, ButtonGroup, Overlay, Slider} from 'react-native-elements';
 import { FileSystem } from 'expo';
 import { NavigationActions } from 'react-navigation';
 
@@ -12,9 +12,13 @@ class SettingScreen extends React.Component {
       this.settings={};
       this.state={
           value:2,
-          isLoading:true
+          isLoading:true,
+          overlayVisible: false,
+          removeText: null,
+          deleteFunction:null,
       }
-      
+      this.overlayBP = this.overlayBP.bind(this);
+		  this.overlayItem = null;
       this.constructFileSettings();
     }
 
@@ -56,12 +60,28 @@ class SettingScreen extends React.Component {
     }
 
     render() {
+      const overlayButtons = ['Yes', 'No'];
         if(this.state.isLoading){
             return(<View style={{flex:1,alignItems: 'center', justifyContent: 'center' }}><Text>Loading...</Text></View>)
         }
       return (
         <View style={{ flex: 1}}>
             <Text h1>Settings</Text>
+            <Overlay 
+              isVisible={this.state.overlayVisible}
+              onBackdropPress={ this.hideOverlay.bind(this) }
+              height={'auto'}
+            >
+              <>
+                <Text>{this.overlayItem}?</Text>
+                <ButtonGroup 
+                  onPress={this.overlayBP}
+                  buttons={overlayButtons}
+                  containerStyle={{top:16}}
+                />
+                <Text>{this.state.removeText}</Text>
+              </>
+            </Overlay>
                 <ListItem
                     key={0}
                     title={"Configure Days"}
@@ -89,13 +109,13 @@ class SettingScreen extends React.Component {
                     title={"Delete All Meals"}
                     titleStyle={{color:'red'}}
                     topDivider={true}
-                    onLongPress={this.handleDeleteMealPlan}
+                    onLongPress={this.displayOverlay.bind(this, "Delete All Meals")}
                 />
                 <ListItem
                     key={2}
                     title={"Delete All Custom Meals"}
                     titleStyle={{color:'red'}}
-                    onLongPress={() => this.handleDeleteCustomMeals()}
+                    onLongPress={this.displayOverlay.bind(this,"Delete All Custom Meals")}
                 />
                 
                 
@@ -124,6 +144,35 @@ class SettingScreen extends React.Component {
 			key: 'MealStack',
 		});
 		this.props.navigation.dispatch(setResetFlag);
+    }
+    displayOverlay(name){
+      // Set name of meal to be printed in Overlay
+      this.overlayItem = name;
+      if(name == "Delete All Meals")
+        this.setState({overlayVisible:true,deleteFunction:this.handleDeleteMealPlan.bind(this)});
+      else if(name == "Delete All Custom Meals")
+        this.setState({overlayVisible:true,deleteFunction:this.handleDeleteCustomMeals.bind(this)});
+    }
+    
+    hideOverlay(){
+      this.overlayItem = null;
+      this.setState({overlayVisible:false, removeText:null});
+    }
+  
+    async overlayBP(selectedIndex){
+      if(selectedIndex == 0){
+        //set state for state saying its being removed
+        this.setState({removeText:'Removing...'});
+        //await removal
+        console.log(this.state.deleteFunction);
+        await this.state.deleteFunction;
+
+        //hide overlay
+        this.hideOverlay();
+      }
+      if(selectedIndex == 1)
+        this.hideOverlay();
+      
     }
 
   }
