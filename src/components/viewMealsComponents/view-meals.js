@@ -11,7 +11,24 @@ class MealScreen extends React.Component {
     constructor(props){
         super(props);
 
-        let currentCustomMeals=[];
+		this.readFile();
+        
+        this.state={
+            customMeals:[],
+            presetMeals:recipeData,
+            displayList:recipeData,
+            selectedIndex:0,
+            overlayVisible: false,
+            removeText: null
+        }
+        this.overlayBP = this.overlayBP.bind(this);
+		    this.overlayItem = null;
+        this.updateIndex = this.updateIndex.bind(this);
+
+    }
+	
+	readFile() {
+		let currentCustomMeals=[];
         this.fileUri = FileSystem.documentDirectory + 'custom.json';
         //FileSystem reads are asynchronous, must await before creating MealPlanCalendar object
         FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
@@ -47,23 +64,9 @@ class MealScreen extends React.Component {
 
             }
 
-
         });
-        
-        this.state={
-            customMeals:currentCustomMeals,
-            presetMeals:recipeData,
-            displayList:recipeData,
-            selectedIndex:0,
-            overlayVisible: false,
-            removeText: null
-        }
-        this.overlayBP = this.overlayBP.bind(this);
-		    this.overlayItem = null;
-        this.updateIndex = this.updateIndex.bind(this);
-    
-
-    }
+	}
+	
     updateIndex (selectedIndex) {
         console.log(this.state.customMeals);
         this.setState({selectedIndex});

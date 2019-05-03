@@ -14,6 +14,8 @@ import MealListScreen from '../viewMealsComponents/view-meals'
 
 import SettingScreen from '../settingsComponents/setting-home'
 
+import { NavigationActions, StackActions } from 'react-navigation';
+
 
 const CalendarStack = createSwitchNavigator({
   Calendar: CalendarScreen,
@@ -52,6 +54,11 @@ const MealStack = createSwitchNavigator({
     Meals: MealListScreen,
 });
 
+const resetMealView = StackActions.reset({
+	index: 0,
+	actions: [NavigationActions.navigate({routeName: 'Main'}), NavigationActions.setParams({params: {resetCustom: true}, key: 'MealView'})],
+});
+
 MealStack.navigationOptions = {
     tabBarLabel: 'Meals',
     tabBarIcon: ({focused}) => (
@@ -59,7 +66,18 @@ MealStack.navigationOptions = {
         name={'cutlery'}
         size={26}
         />
-    )
+    ),
+	
+	tabBarOnPress: ({ navigation, defaultHandler }) => {
+		if(navigation.getParam('resetCustom', false) == true){
+			//Set the resetCustom flag in MealStack to false and 
+			navigation.setParams({resetCustom: false});
+			navigation.dispatch(resetMealView);
+			defaultHandler();
+		}
+		else
+			defaultHandler();
+	}
 }
 
 const SettingStack = createSwitchNavigator({

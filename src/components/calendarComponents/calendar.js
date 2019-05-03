@@ -53,7 +53,6 @@ class CalendarScreen extends React.Component {
   }
   
   render() {
-	this.constructMealPlan();
 	
     let date1 = moment(_today.dateString).format(_format);
     let date2 = moment().add(1, 'days').format(_format);
