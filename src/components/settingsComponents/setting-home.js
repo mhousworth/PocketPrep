@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Header,Text,ListItem,Slider,CheckBox,Button } from 'react-native-elements';
 import { FileSystem } from 'expo';
+import { NavigationActions } from 'react-navigation';
 
 
 
@@ -94,7 +95,7 @@ class SettingScreen extends React.Component {
                     key={2}
                     title={"Delete All Custom Meals"}
                     titleStyle={{color:'red'}}
-                    onLongPress={this.handleDeleteCustomMeals}
+                    onLongPress={() => this.handleDeleteCustomMeals()}
                 />
                 
                 
@@ -109,11 +110,20 @@ class SettingScreen extends React.Component {
         this.setState({value:numDays});
         
     }
-    handleDeleteMealPlan(){
+    async handleDeleteMealPlan(){
         console.log("Deleting Meal Plan");
+		this.fileUri = FileSystem.documentDirectory + 'mealplan.json';
+		await FileSystem.deleteAsync(FileSystem.documentDirectory + 'mealplan.json');
     }
-    handleDeleteCustomMeals(){
+    async handleDeleteCustomMeals(){
         console.log("Deleting Custom");
+		this.fileUri = FileSystem.documentDirectory + 'custom.json';
+		await FileSystem.deleteAsync(FileSystem.documentDirectory + 'custom.json');
+		const setResetFlag = NavigationActions.setParams({
+			params: {resetCustom: true},
+			key: 'MealStack',
+		});
+		this.props.navigation.dispatch(setResetFlag);
     }
 
   }
