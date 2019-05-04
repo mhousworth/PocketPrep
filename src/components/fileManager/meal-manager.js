@@ -110,7 +110,6 @@ export default class MealManager {
 			}
 			//Parse result to object and store in MealPlanCalendar
 			this.MealPlanCalendar = JSON.parse(result);
-			console.log(result);
 		}
 		else {
 			console.log('mealplan file does not exist');
@@ -159,7 +158,6 @@ export default class MealManager {
 			//Retrieve mealplan from calendar
 			mp = this.MealPlanCalendar[d];
 			
-			console.log('mp old: ' + JSON.stringify(mp));
 			
 			//add the meal to mealplan object
 			mp = this.arrayAdd(mp,t,m);
@@ -217,7 +215,6 @@ export default class MealManager {
 		else if (t == 'D' || t == 2)
 			mp.Dinner.push(m);
 		
-		console.log('mp new: ' + JSON.stringify(mp));
 		return mp;
 	}
 	

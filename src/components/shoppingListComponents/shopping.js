@@ -55,7 +55,6 @@ class ShoppingListScreen extends React.Component {
           //Parse result to object and store in Custom Meals List
 
           let dataAggregation = [...recipeDb,...JSON.parse(result)];
-          // console.log(this.createShoppingList(this.mealNames,dataAggregation));
           this.setState({ingredients:this.createShoppingList(this.mealNames,dataAggregation)});
           
         }
