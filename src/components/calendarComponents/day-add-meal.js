@@ -35,7 +35,6 @@ class viewDayAddMeal extends React.Component {
               //Parse result to object and store in MealPlanCalendar
               currentCustomMeals = JSON.parse(result);
               this.setState({customMeals:currentCustomMeals});
-            //    console.log(currentCustomMeals);
             }
             //Run async function
             fileread();

@@ -162,7 +162,6 @@ class AddScreen extends React.Component {
     }
 	handleSubmitsIngredient(){
       
-		console.log('custom meals object: ' + JSON.stringify(this.state.customMeals));
 	  
           // Creates a custom meal object
           var newMeal = {
