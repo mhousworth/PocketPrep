@@ -149,9 +149,9 @@ class SettingScreen extends React.Component {
       // Set name of meal to be printed in Overlay
       this.overlayItem = name;
       if(name == "Delete All Meals")
-        this.setState({overlayVisible:true,deleteFunction:this.handleDeleteMealPlan.bind(this)});
+        this.setState({overlayVisible:true, deleteFunction:() => this.handleDeleteMealPlan()});
       else if(name == "Delete All Custom Meals")
-        this.setState({overlayVisible:true,deleteFunction:this.handleDeleteCustomMeals.bind(this)});
+        this.setState({overlayVisible:true, deleteFunction:() => this.handleDeleteCustomMeals()});
     }
     
     hideOverlay(){
@@ -165,7 +165,7 @@ class SettingScreen extends React.Component {
         this.setState({removeText:'Removing...'});
         //await removal
         console.log(this.state.deleteFunction);
-        await this.state.deleteFunction;
+        await this.state.deleteFunction();
 
         //hide overlay
         this.hideOverlay();
