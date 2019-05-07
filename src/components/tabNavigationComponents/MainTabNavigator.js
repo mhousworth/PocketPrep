@@ -61,7 +61,7 @@ const resetMealView = StackActions.reset({
 });
 
 MealStack.navigationOptions = {
-  tabBarLabel: 'Meals',
+  tabBarLabel: 'Recipes',
   tabBarIcon: ({ focused }) => (
     <FontAwesome
       focused={focused}

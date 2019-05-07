@@ -101,38 +101,46 @@ class MealScreen extends React.Component {
               buttons={overlayButtons}
               containerStyle={{ top: 16 }}
             />
-            <Overlay 
-                isVisible={this.state.overlayVisible}
-                onBackdropPress={ this.hideOverlay.bind(this) }
-                height={'auto'}
-            >
-                <>
-                  <Text>Delete "{this.overlayItem}"?</Text>
-                  <ButtonGroup 
-                    onPress={this.overlayBP}
-                    buttons={overlayButtons}
-                    containerStyle={{top:16}}
-                  />
-                  <Text>{this.state.removeText}</Text>
-                </>
-            </Overlay>
-        
-            <ScrollView style={{height:'85%'}} >
-                {
-                    this.state.displayList.map((l,i) => (
-                    <ListItem
-                        key={i}
-                        title={l.name}
-                        topDivider={true}
-                        bottomDivider={true}
-                        rightIcon={this.handleViewIcon(l.name)}
-                        onPress={this.handleMealSend.bind(this,l.name)}
-                    />
-                    ))
-                }
-            </ScrollView>
-            {this.handleViewAddButton()}
-        </View>
+            <Text>{this.state.removeText}</Text>
+          </>
+        </Overlay>
+
+        <ScrollView style={{ height: '85%' }} >
+          {
+            this.state.displayList.map((l, i) => (
+              <ListItem
+                key={i}
+                title={l.name}
+                topDivider={true}
+                bottomDivider={true}
+                rightIcon={this.handleViewIcon(l.name)}
+                onPress={this.handleMealSend.bind(this,l.name)}
+              />
+            ))
+          }
+        </ScrollView>
+        {this.handleViewAddButton()}
+      </View>
+    );
+  }
+  displayOverlay(name) {
+    this.overlayItem = name;
+    this.setState({ overlayVisible: true });
+  }
+
+  hideOverlay() {
+    this.overlayItem = null;
+    this.setState({ overlayVisible: false, removeText: null });
+  }
+  handleViewIcon(itemName) {
+    if (this.state.selectedIndex == 1) {
+      return (
+        <Icon
+          name={Platform.OS === 'ios' ? 'ios-close-circle' : 'md-close-circle'}
+          size={28}
+          color='red'
+          onPress={this.displayOverlay.bind(this, itemName)}
+        />
       );
     }
     else {
@@ -163,7 +171,7 @@ class MealScreen extends React.Component {
           style={styles.primarybutton}
           onPress={() => this.props.navigation.navigate('AddRecipe')}
         >
-          <Text style={{ color: '#FFFFFF' }}> Create a Meal </Text>
+          <Text style={{ color: '#FFFFFF', fontSize: 20 }}> Create a Recipe </Text>
         </TouchableOpacity>
       );
     }
@@ -213,7 +221,8 @@ const styles = StyleSheet.create({
   primarybutton: {
     alignItems: 'center',
     backgroundColor: '#337ab7',
-    padding: 10
+    padding: 14,
+    bottom: 10
   }
 })
 export default MealScreen;
