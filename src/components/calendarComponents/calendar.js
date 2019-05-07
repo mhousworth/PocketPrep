@@ -24,7 +24,7 @@ class CalendarScreen extends React.Component {
     super(props);
     this.MealManage = null;
     this.state = {
-      _markedDates: this.initialState
+      _markedDates: this.initialState,
     }
     this.constructMealPlan();
 	}
@@ -77,55 +77,61 @@ class CalendarScreen extends React.Component {
         />
         <Button
           title= 'Compile Shopping List'
-          onPress ={this.handleSend.bind(this)}
+          onPress = {() => this.handleSend()}
         />
       </View>
     );
   }
+  
   async grabSettings(){
     this.fileUri = FileSystem.documentDirectory + 'settings.json';
     //FileSystem retrieves file information (exists), must await before accessing file
-    FileSystem.getInfoAsync(this.fileUri).then((fileInfo) =>{
-
-      if ( fileInfo["exists"] == true) {
+    let fileInfo = await FileSystem.getInfoAsync(this.fileUri);
+	
+    if ( fileInfo["exists"] == true) {
         
         //FileSystem reads are asynchronous, must await before creating customMeals List
-        fileread = async () => {
-          let result = null;
+        let result = null;
         
-          try {
+        try {
             //Wait for FileSystem read to return a result string
             result = await FileSystem.readAsStringAsync(this.fileUri);
           
-          } catch(e) {
-          console.log(e);
-          }
-          //Parse result to object and store in Custom Meals List
-          this.settings=JSON.parse(result); 
-          console.log(this.settings); 
-          
-          this.setState({numDays:this.settings['days']});          
+		} catch(e) {
+        console.log(e);
         }
-        //Run async function
-        fileread();
-        }
-        else {
+        //Parse result to object and store in Custom Meals List
+        this.settings=JSON.parse(result);
+		console.log(this.settings);
+		
+		this.setState({numDays:this.settings['days']});  
+		return this.settings;
+	}
+    else {
           console.log('settings file does not exist');
 
           // Write Empty List 
           this.settings={days:3}
           FileSystem.writeAsStringAsync(this.fileUri, JSON.stringify({days:3}));
-          this.setState({numDays:this.settings['days']}); 
-        }
-    });
 
-}
+          this.setState({numDays:this.settings['days']}); 
+		  return this.settings;
+    }
+  }
+  
   async handleSend(){
-    await this.grabSettings();
+	await this.grabSettings();
+	this.handleCompile();
+  }
+  
+  async handleCompile(){
+    
     let dates=[moment(_today.dateString).format(_format)];
+
     for(let numDay=1;numDay<this.state.numDays;numDay++){
         dates.push(moment().add(numDay, 'days').format(_format));
     }
+
     // Account for :
     //    - Undefined(Days with no meals set)
     //    - MealPlan({"Breakfast":[],"Lunch":[],"Dinner":[]})
@@ -145,7 +151,6 @@ class CalendarScreen extends React.Component {
     // send array of mealnames through .createShoppingList
 
     // navigate to the shopping list
-
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'Shopping',
