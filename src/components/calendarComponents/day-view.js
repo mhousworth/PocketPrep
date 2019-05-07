@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
-import { Header, ListItem, Text, Input, Button, Divider, ButtonGroup, Overlay, } from 'react-native-elements';
+import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { ListItem, Text, ButtonGroup, Overlay, } from 'react-native-elements';
 import MealManager from '../fileManager/meal-manager';
 import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -112,7 +112,7 @@ class viewDayScreen extends React.Component {
 
 		return (
 
-			<View style={{ backgroundColor: '#d0d0d0', flex: 1 }} >
+			<View style={{ flex: 1 }} >
 
 				<Text h1 style={{ backgroundColor: '#0b486b', color: '#FFFFFF', padding: Platform.OS === 'ios' ? '5% 0 5% 5%' : '5%' }}>{dayChosen}</Text>
 				<Overlay
@@ -156,9 +156,13 @@ class viewDayScreen extends React.Component {
 						))
 					}
 				</ScrollView>
-				<Button title='Add a meal'
+
+				<TouchableOpacity
+					style={styles.primarybutton}
 					onPress={() => this.props.navigation.navigate('DayAddMeal', { dayChosen: this.state.currDate, currIndex: currIndex })}
-				/>
+				>
+					<Text style={{ color: '#FFFFFF', fontSize: 20 }}> Add a Meal </Text>
+				</TouchableOpacity>
 
 			</View>
 		);
@@ -191,4 +195,13 @@ class viewDayScreen extends React.Component {
 
 	}
 }
+
+const styles = StyleSheet.create({
+	primarybutton: {
+	  alignItems: 'center',
+	  backgroundColor: '#337ab7',
+	  padding: 14,
+	  bottom: 10
+	}
+  })
 export default viewDayScreen;

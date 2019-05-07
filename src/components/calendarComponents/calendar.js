@@ -78,7 +78,7 @@ class CalendarScreen extends React.Component {
           style={styles.primarybutton}
           onPress={this.handleSend.bind(this)}
         >
-          <Text style={{ color: '#FFFFFF' }}> Compile Shopping List </Text>
+          <Text style={{ color: '#FFFFFF', fontSize: 20 }}> Compile Shopping List </Text>
         </TouchableOpacity>
       </View>
     );
@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
   primarybutton: {
     alignItems: 'center',
     backgroundColor: '#337ab7',
-    padding: 10
+    padding: 14,
+    bottom: 10
   }
 })
 

@@ -104,7 +104,7 @@ class AddScreen extends React.Component {
         </View>
         <ScrollView style={{
           height: '25%',
-          marginTop: '5%',
+          marginBottom: '3%',
           borderRadius: 4,
           borderWidth: 0.5,
           borderColor: '#0b486b'
@@ -129,7 +129,7 @@ class AddScreen extends React.Component {
           style={styles.primarybutton}
           onPress={this.handleSubmitsIngredient.bind(this)}
         >
-          <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 20 }}> Create Recipe </Text>
+          <Text style={{ color: '#FFFFFF', fontSize: 20 }}> Create Recipe </Text>
         </TouchableOpacity>
       </View>
     );
@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
   primarybutton: {
     alignItems: 'center',
     backgroundColor: '#337ab7',
-    padding: 10
+    padding: 14,
+    bottom: 10
   }
 })
 
