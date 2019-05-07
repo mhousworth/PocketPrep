@@ -113,7 +113,7 @@ class MealScreen extends React.Component {
                         topDivider={true}
                         bottomDivider={true}
                         rightIcon={this.handleViewIcon(l.name)}
-                        // onPress={this.handleMealSend.bind(this,l.name)}
+                        onPress={this.handleMealSend.bind(this,l.name)}
                     />
                     ))
                 }
