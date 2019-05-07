@@ -1,25 +1,24 @@
 import React from 'react';
 import moment from 'moment';
-import { View } from 'react-native';
-import { Button } from 'react-native-elements'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import MealManager from '../fileManager/meal-manager';
-import { StackActions,NavigationActions} from 'react-navigation';
-import {FileSystem} from 'expo';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { FileSystem } from 'expo';
 
 
 
 
 const _format = 'YYYY-MM-DD'
-const _today = moment().add(0,'days').format(_format)
+const _today = moment().add(0, 'days').format(_format)
 const _maxDate = moment().add(60, 'days').format(_format)
 
 class CalendarScreen extends React.Component {
   // It is not possible to select some to current day.
   initialState = {
-      [_today]: {disabled: false}
+    [_today]: { disabled: false }
   }
-  
+
   constructor(props) {
     super(props);
     this.MealManage = null;
@@ -27,58 +26,59 @@ class CalendarScreen extends React.Component {
       _markedDates: this.initialState,
     }
     this.constructMealPlan();
-	}
+  }
 
-	async constructMealPlan() {
+  async constructMealPlan() {
 
-		console.log("Navigated to Calendar");
-	
-		let mm = new MealManager();
+    console.log("Navigated to Calendar");
 
-		await mm.init();
-		
-		this.MealManage = mm;
+    let mm = new MealManager();
 
-	}
-  
+    await mm.init();
+
+    this.MealManage = mm;
+
+  }
+
   // Could use this to navigate to a new page
   // probably something like: navigation.navigate('MealList', {day.dateString})
   // if food is found in the MealList, mark the date
   onDaySelect = (day) => {
-      const _selectedDay = moment(day.dateString).format(_format);
+    const _selectedDay = moment(day.dateString).format(_format);
 
-      this.props.navigation.navigate('DayView',{
-        dayChosen: _selectedDay
-      });
+    this.props.navigation.navigate('DayView', {
+      dayChosen: _selectedDay
+    });
 
   }
-  
+
   render() {
-	this.constructMealPlan();
+    this.constructMealPlan();
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <CalendarList
-            theme={{dotColor: 'red', monthTextColor: 'orange'
-        }}
-            
-            pastScrollRange={0}
-            futureScrollRange={1}
+          theme={{ monthTextColor: 'blue' }}
 
-            // we use moment.js to give the minimum and maximum dates.
-            minDate={_today}
-            maxDate={_maxDate}
+          pastScrollRange={0}
+          futureScrollRange={1}
 
-            // hideArrows={true}
+          // we use moment.js to give the minimum and maximum dates.
+          minDate={_today}
+          maxDate={_maxDate}
 
-            onDayPress={this.onDaySelect}
-            markedDates={this.state._markedDates}
+          // hideArrows={true}
 
-            //Would like to get this working with: markingType={'period'}, but currently only implemented for default marking
+          onDayPress={this.onDaySelect}
+          markedDates={this.state._markedDates}
+
+        //Would like to get this working with: markingType={'period'}, but currently only implemented for default marking
         />
-        <Button
-          title= 'Compile Shopping List'
-          onPress = {() => this.handleSend()}
-        />
+        <TouchableOpacity
+          style={styles.primarybutton}
+          onPress={this.handleSend.bind(this)}
+        >
+          <Text style={{ color: '#FFFFFF' }}> Compile Shopping List </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -130,6 +130,7 @@ class CalendarScreen extends React.Component {
 
     for(let numDay=1;numDay<this.state.numDays;numDay++){
         dates.push(moment().add(numDay, 'days').format(_format));
+
     }
 
     // Account for :
@@ -141,8 +142,8 @@ class CalendarScreen extends React.Component {
     // Stores an array of all meal names (string[] mealNames)
     dates.map((d) => {
       let plan = this.MealManage.getMealPlan(d);
-      if(plan !== undefined){
-          mealNames=mealNames.concat(plan["Breakfast"],plan["Lunch"],plan["Dinner"]);
+      if (plan !== undefined) {
+        mealNames = mealNames.concat(plan["Breakfast"], plan["Lunch"], plan["Dinner"]);
       }
     });
     console.log("mealNames set");
@@ -154,9 +155,9 @@ class CalendarScreen extends React.Component {
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'Shopping',
-      params:{
-        compileNames:mealNames,
-        shouldReset:true
+      params: {
+        compileNames: mealNames,
+        shouldReset: true
       },
     });
 
@@ -164,12 +165,16 @@ class CalendarScreen extends React.Component {
 
     // this.props.navigation.navigate('Shopping',{compileNames:mealNames});
     return;
-    
+
   }
 }
 
-export default CalendarScreen;
+const styles = StyleSheet.create({
+  primarybutton: {
+    alignItems: 'center',
+    backgroundColor: '#337ab7',
+    padding: 10
+  }
+})
 
-// TODO: Set up an event handle for navigating to date specified page
-// TODO: Set up item container for user entered meals -- requires backend pulling from a list
-// TODO: If there is at least 1 item in the item container for that date, the app marks the day
+export default CalendarScreen;
